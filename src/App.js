@@ -1,14 +1,18 @@
 import "./App.css";
 import { useState, useRef } from "react";
+import { AiOutlineSend } from "react-icons/ai";
+import { MdAttachFile } from "react-icons/md";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
+import TextareaAutosize from "react-textarea-autosize";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-firebase.initializeApp({
+const config = {
   apiKey: "AIzaSyCyPX4xnNg9Vo4CZa94bYaz-U38EaxWfIA",
   authDomain: "chat-app-627c6.firebaseapp.com",
   projectId: "chat-app-627c6",
@@ -17,7 +21,13 @@ firebase.initializeApp({
   appId: "1:757724613437:web:da90b14bcfa92476dd5354",
   measurementId: "G-7QYM9E34V2",
   databaseUrl: "https://chat-app-627c6-default-rtdb.firebaseio.com/",
-});
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+} else {
+  firebase.app();
+}
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -27,7 +37,7 @@ function App() {
 
   return (
     <div className="App">
-      <header></header>
+      <header>Messenger</header>
 
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
       <SignOut />
@@ -53,9 +63,8 @@ function SignOut() {
 function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy("createdAt").limit(25);
+  const query = messagesRef.orderBy("createdAt", "desc").limit(20);
   const [messages] = useCollectionData(query, { idField: "id" });
-  console.log(messages);
 
   const [formValue, setFormValue] = useState("");
 
@@ -76,22 +85,43 @@ function ChatRoom() {
     dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleTextArea = (e) => {
+    setFormValue(e.target.value);
+  };
+
+  const onKeyPress = (e) => {
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      e.preventDefault();
+      sendMessage(e);
+    }
+  };
+
   return (
-    <>
-      <div>
+    <div className="chat-room">
+      <div className="messages-container">
         {messages &&
-          messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
+          messages
+            .map((msg) => <ChatMessage key={msg.id} message={msg} />)
+            .reverse()}
         <div ref={dummy}></div>
       </div>
 
-      <form onSubmit={sendMessage}>
-        <input
-          value={formValue}
-          onChange={(e) => setFormValue(e.target.value)}
-        />
-        <button type="submit">Send</button>
-      </form>
-    </>
+      <div className="form-container">
+        <form onSubmit={sendMessage} onKeyDown={onKeyPress}>
+          <button className="form-button">
+            <MdAttachFile className="icon" />
+          </button>
+          <TextareaAutosize
+            value={formValue}
+            onChange={handleTextArea}
+            placeholder="Write a message..."
+          />
+          <button type="submit" className="form-button">
+            <AiOutlineSend className="icon" />
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 

@@ -1,38 +1,119 @@
+body {
+  background: #0f0c29; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #24243e,
+    #201a62,
+    #0f0c29
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #24243e,
+    #1a1646,
+    #0f0c29
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  overflow: hidden;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App header {
+  border: 1px solid rebeccapurple;
+  background-color: #181717;
+  color: white;
+  height: 5vh;
+  min-height: 50px;
+  width: 100%;
+  top: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 1rem 0;
+}
+
+.App section {
+  border: 1px solid rebeccapurple;
+  width: 80vw;
+  margin: auto;
+}
+
+.chat-room {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container {
+  border: 1px solid rebeccapurple;
+}
+
+form {
+  height: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: auto;
+}
+
+form button {
+  width: 10%;
+}
+
+input {
+  width: 80%;
+  background-color: transparent;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+textarea {
+  width: 80%;
+  background-color: transparent;
+  color: white;
+  resize: none;
+  min-height: 2rem;
+  font-size: 1.8rem;
+  padding: 0.6rem 0.4rem;
+  outline: none;
+  border: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.messages-container {
+  border: 1px solid rebeccapurple;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 70vh;
+  padding-bottom: 3rem;
+}
+
+.message {
+  background-color: rebeccapurple;
+  color: white;
+  max-width: fit-content;
+  word-wrap: break-word;
+  word-break: break-all;
+  min-width: 1rem;
+  padding: 0 1rem;
+  margin: 0.5rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.message.sent {
+  align-self: flex-end;
+}
+
+.form-button {
+  background-color: transparent;
+  height: 3rem;
+  width: 3rem;
+  border: none;
+}
+
+.form-button .icon {
+  color: rebeccapurple;
+  font-size: 2rem;
 }
