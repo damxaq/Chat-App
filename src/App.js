@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 import { MdAttachFile } from "react-icons/md";
 
@@ -81,8 +81,6 @@ function ChatRoom() {
     });
 
     setFormValue("");
-
-    dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleTextArea = (e) => {
@@ -95,6 +93,10 @@ function ChatRoom() {
       sendMessage(e);
     }
   };
+
+  useEffect(() => {
+    dummy.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="chat-room">

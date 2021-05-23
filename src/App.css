@@ -46,7 +46,7 @@ body {
 }
 
 .form-container {
-  border: 1px solid rebeccapurple;
+  border: 1px solid rgba(104, 53, 155, 0.1);
 }
 
 form {
@@ -89,7 +89,7 @@ textarea {
 }
 
 .message {
-  background-color: rebeccapurple;
+  background-color: rgb(14, 14, 56);
   color: white;
   max-width: fit-content;
   word-wrap: break-word;
@@ -103,6 +103,7 @@ textarea {
 }
 
 .message.sent {
+  background-color: rebeccapurple;
   align-self: flex-end;
 }
 
