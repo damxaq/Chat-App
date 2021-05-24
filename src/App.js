@@ -1,7 +1,12 @@
 import "./App.css";
+import ChatMessage from "./ChatMessage";
+import SignIn from "./SignIn";
+import SignOut from "./SignOut";
+
 import { useState, useRef, useEffect } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 import { MdAttachFile } from "react-icons/md";
+import { AiFillMessage } from "react-icons/ai";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -34,30 +39,43 @@ const firestore = firebase.firestore();
 
 function App() {
   const [user] = useAuthState(auth);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isRegisterButtonVisible, setIsRegisterButtonVisible] = useState(true);
+
+  console.log(user);
+
+  useEffect(() => {
+    if (user) setIsRegisterButtonVisible(false);
+    else setIsRegisterButtonVisible(true);
+  }, [user, setIsRegisterButtonVisible]);
 
   return (
     <div className="App">
-      <header>Messenger</header>
-
-      <section>{user ? <ChatRoom /> : <SignIn />}</section>
-      <SignOut />
+      <header>
+        <i>
+          <AiFillMessage style={{ color: "rebeccapurple", fontSize: "2rem" }} />
+        </i>
+        Messenger
+        <div>
+          {user ? <SignOut auth={auth} /> : <SignIn auth={auth} />}
+          {isRegisterButtonVisible && (
+            <button onClick={() => setIsRegisterModalOpen(true)}>
+              register
+            </button>
+          )}
+        </div>
+      </header>
+      {isRegisterModalOpen ? (
+        <Register />
+      ) : (
+        <section>{user && <ChatRoom />}</section>
+      )}
     </div>
   );
 }
 
-function SignIn() {
-  const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-  };
-
-  return <button onClick={signInWithGoogle}>Sign in with Google</button>;
-}
-
-function SignOut() {
-  return (
-    auth.currentUser && <button onClick={() => auth.signOut()}>Sign out</button>
-  );
+function Register() {
+  return <div>Registeringingingin</div>;
 }
 
 function ChatRoom() {
@@ -103,7 +121,15 @@ function ChatRoom() {
       <div className="messages-container">
         {messages &&
           messages
-            .map((msg) => <ChatMessage key={msg.id} message={msg} />)
+            .map((msg) => (
+              <ChatMessage
+                key={msg.id}
+                message={msg}
+                messageClass={
+                  msg.uid === auth.currentUser.uid ? "sent" : "received"
+                }
+              />
+            ))
             .reverse()}
         <div ref={dummy}></div>
       </div>
@@ -123,19 +149,6 @@ function ChatRoom() {
           </button>
         </form>
       </div>
-    </div>
-  );
-}
-
-function ChatMessage(props) {
-  const { text, uid, photoURL } = props.message;
-
-  const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
-
-  return (
-    <div className={`message ${messageClass}`}>
-      {/* <img src={photoURL} alt="img" /> */}
-      <p>{text}</p>
     </div>
   );
 }
