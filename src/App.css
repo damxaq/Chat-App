@@ -1,17 +1,7 @@
 body {
-  background: #0f0c29; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #24243e,
-    #201a62,
-    #0f0c29
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #24243e,
-    #1a1646,
-    #0f0c29
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #0f0c29;
+  background: -webkit-linear-gradient(to right, #24243e, #201a62, #0f0c29);
+  background: linear-gradient(to right, #24243e, #1a1646, #0f0c29);
 
   overflow: hidden;
 }
@@ -57,10 +47,6 @@ form {
   height: auto;
   /* border: 1px solid white; */
   margin-top: 1rem;
-}
-
-form button {
-  width: 10%;
 }
 
 textarea {
@@ -114,6 +100,46 @@ textarea {
 .form-button .icon {
   color: rebeccapurple;
   font-size: 2rem;
+}
+
+.register-container {
+  color: white;
+  padding: 1rem;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.register-form input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rebeccapurple;
+  outline: none;
+  color: white;
+  font-size: 1.5rem;
+  max-width: 80%;
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+}
+
+.register-form button {
+  background: #52c234;
+  background: -webkit-linear-gradient(to top, #134700, #52c234);
+  background: linear-gradient(to top, #134700, #52c234);
+
+  padding: 1rem 2rem;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  margin: 1rem;
 }
 
 ::-webkit-scrollbar {

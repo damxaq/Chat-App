@@ -1,7 +1,8 @@
 import "./App.css";
 import ChatMessage from "./ChatMessage";
-import SignIn from "./SignIn";
-import SignOut from "./SignOut";
+import Authentication from "./Authentication";
+import RegisterModal from "./RegisterModal";
+import SignInModal from "./SignInModal";
 
 import { useState, useRef, useEffect } from "react";
 import { AiOutlineSend } from "react-icons/ai";
@@ -40,14 +41,16 @@ const firestore = firebase.firestore();
 function App() {
   const [user] = useAuthState(auth);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-  const [isRegisterButtonVisible, setIsRegisterButtonVisible] = useState(true);
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 
   console.log(user);
 
   useEffect(() => {
-    if (user) setIsRegisterButtonVisible(false);
-    else setIsRegisterButtonVisible(true);
-  }, [user, setIsRegisterButtonVisible]);
+    if (user) {
+      if (isRegisterModalOpen) setIsRegisterModalOpen(false);
+      if (isSignInModalOpen) setIsSignInModalOpen(false);
+    }
+  }, [user, setIsRegisterModalOpen]);
 
   return (
     <div className="App">
@@ -56,26 +59,20 @@ function App() {
           <AiFillMessage style={{ color: "rebeccapurple", fontSize: "2rem" }} />
         </i>
         Messenger
-        <div>
-          {user ? <SignOut auth={auth} /> : <SignIn auth={auth} />}
-          {isRegisterButtonVisible && (
-            <button onClick={() => setIsRegisterModalOpen(true)}>
-              register
-            </button>
-          )}
-        </div>
+        <Authentication
+          user={user}
+          auth={auth}
+          setIsRegisterModalOpen={setIsRegisterModalOpen}
+          setIsSignInModalOpen={setIsSignInModalOpen}
+        />
       </header>
-      {isRegisterModalOpen ? (
-        <Register />
-      ) : (
-        <section>{user && <ChatRoom />}</section>
-      )}
+      <section>
+        {isSignInModalOpen && <SignInModal auth={auth} />}
+        {isRegisterModalOpen && <RegisterModal />}
+        {user && <ChatRoom />}
+      </section>
     </div>
   );
-}
-
-function Register() {
-  return <div>Registeringingingin</div>;
 }
 
 function ChatRoom() {
@@ -91,14 +88,16 @@ function ChatRoom() {
 
     const { uid, photoURL } = auth.currentUser;
 
-    await messagesRef.add({
-      text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid,
-      photoURL,
-    });
+    if (formValue) {
+      await messagesRef.add({
+        text: formValue,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid,
+        photoURL,
+      });
 
-    setFormValue("");
+      setFormValue("");
+    }
   };
 
   const handleTextArea = (e) => {
