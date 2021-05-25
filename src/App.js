@@ -68,7 +68,7 @@ function App() {
       </header>
       <section>
         {isSignInModalOpen && <SignInModal auth={auth} />}
-        {isRegisterModalOpen && <RegisterModal />}
+        {isRegisterModalOpen && <RegisterModal auth={auth} />}
         {user && <ChatRoom />}
       </section>
     </div>
@@ -142,6 +142,7 @@ function ChatRoom() {
             value={formValue}
             onChange={handleTextArea}
             placeholder="Write a message..."
+            maxRows={3}
           />
           <button type="submit" className="form-button">
             <AiOutlineSend className="icon" />

@@ -146,11 +146,15 @@ textarea {
   width: 3px;
 }
 
-::-webkit-scrollbar-track {
-  /* background-color: rgb(31, 0, 61); */
-}
-
 ::-webkit-scrollbar-thumb {
   background-image: linear-gradient(blue, navy);
   border-radius: 2px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: white !important;
 }
