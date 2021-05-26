@@ -8,7 +8,7 @@ const Authentication = (props) => {
   return (
     <div>
       {/* TODO signout can be in app comp */}
-      {user ? (
+      {user && user.emailVerified ? (
         <SignOut auth={auth} />
       ) : (
         <div>

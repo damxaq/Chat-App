@@ -1,8 +1,17 @@
+// add settings
+// add icon next to msg, but only first in a row, if no photo then first letters of name
+// make sign in buttons pretty
+// move chatroom to own file
+// add images
+// add emoji
+// add delay to send again button
+
 import "./App.css";
 import ChatMessage from "./ChatMessage";
 import Authentication from "./Authentication";
 import RegisterModal from "./RegisterModal";
 import SignInModal from "./SignInModal";
+import VerificationModal from "./VerificationModal";
 
 import { useState, useRef, useEffect } from "react";
 import { AiOutlineSend } from "react-icons/ai";
@@ -19,6 +28,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const config = {
+  // move api key to env, and config to separate file
   apiKey: "AIzaSyCyPX4xnNg9Vo4CZa94bYaz-U38EaxWfIA",
   authDomain: "chat-app-627c6.firebaseapp.com",
   projectId: "chat-app-627c6",
@@ -42,8 +52,47 @@ function App() {
   const [user] = useAuthState(auth);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+  const [userVerified, setUserVerified] = useState(false);
 
   console.log(user);
+
+  const verificationTimestamp = window.localStorage.getItem(
+    "verificationTimestamp"
+  );
+
+  const sendVerificationEmail = () => {
+    const newTime = Math.floor(new Date().getTime() / 1000.0);
+    if (verificationTimestamp) {
+      console.log(newTime - verificationTimestamp);
+    }
+    if (
+      user &&
+      user.emailVerified === false &&
+      (verificationTimestamp === null || newTime - verificationTimestamp > 120)
+    ) {
+      window.localStorage.setItem("verificationTimestamp", newTime);
+
+      user
+        .sendEmailVerification()
+        .then(function () {
+          console.log("verification sent");
+        })
+        .catch(function (error) {
+          console.log("verification error", error);
+        });
+    }
+  };
+
+  useEffect(() => {
+    // TODO this can be moved to register
+    sendVerificationEmail();
+  }, [user]);
+
+  useEffect(() => {
+    if (!userVerified && user && user.emailVerified) {
+      setUserVerified(true);
+    }
+  }, [user, setUserVerified]);
 
   useEffect(() => {
     if (user) {
@@ -58,7 +107,7 @@ function App() {
         <i>
           <AiFillMessage style={{ color: "rebeccapurple", fontSize: "2rem" }} />
         </i>
-        Messenger
+        MyChat
         <Authentication
           user={user}
           auth={auth}
@@ -67,9 +116,10 @@ function App() {
         />
       </header>
       <section>
-        {isSignInModalOpen && <SignInModal auth={auth} />}
-        {isRegisterModalOpen && <RegisterModal auth={auth} />}
-        {user && <ChatRoom />}
+        {isSignInModalOpen && <SignInModal auth={auth} user={user} />}
+        {isRegisterModalOpen && <RegisterModal />}
+        {user && !user.emailVerified && <VerificationModal />}
+        {user && userVerified && <ChatRoom />}
       </section>
     </div>
   );
@@ -125,7 +175,7 @@ function ChatRoom() {
                 key={msg.id}
                 message={msg}
                 messageClass={
-                  msg.uid === auth.currentUser.uid ? "sent" : "received"
+                  msg && msg.uid === auth.currentUser.uid ? "sent" : "received"
                 }
               />
             ))

@@ -11,8 +11,11 @@ body {
 }
 
 .App header {
-  /* border: 1px solid rebeccapurple; */
+  border-bottom: 1px solid rgba(104, 53, 155, 0.5);
   background-color: #181717;
+  /* background: #000000;
+  background: -webkit-linear-gradient(to right, #434343, #000000);
+  background: linear-gradient(to right, #434343, #000000); */
   color: white;
   height: 5vh;
   min-height: 50px;
@@ -140,6 +143,51 @@ textarea {
   border: none;
   cursor: pointer;
   margin: 1rem;
+  outline: none;
+}
+
+.verification-container {
+  padding-top: 5rem;
+  color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.verification-container p {
+  max-width: 400px;
+}
+
+/* TODO button styles can be together */
+.verification-container button {
+  background: #52c234;
+  background: -webkit-linear-gradient(to top, #134700, #52c234);
+  background: linear-gradient(to top, #134700, #52c234);
+
+  padding: 1rem 2rem;
+  color: white;
+  font-weight: bold;
+  font-size: 1.4rem;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  margin: 1rem;
+  align-items: center;
+  display: flex;
+  outline: none;
+}
+
+.verification-container button i {
+  font-size: 2rem;
+}
+
+.verification-container button:hover {
+  background: #52c234;
+}
+
+.verification-icon {
+  font-size: 5rem;
 }
 
 ::-webkit-scrollbar {

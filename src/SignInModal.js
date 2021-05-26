@@ -6,7 +6,25 @@ const SignInModal = (props) => {
 
   const signIn = (e) => {
     e.preventDefault();
-    console.log("yeahhhh", e);
+
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+
+    console.log(email, password);
+
+    if (email && password) {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          console.log(userCredential);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
+    }
   };
 
   const signInWithGoogle = () => {
