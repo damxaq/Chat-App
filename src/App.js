@@ -4,6 +4,7 @@
 // add images
 // add emoji
 // add delay to send again button
+// add contacts
 
 import "./App.css";
 
@@ -12,6 +13,7 @@ import RegisterModal from "./RegisterModal";
 import SignInModal from "./SignInModal";
 import VerificationModal from "./VerificationModal";
 import ChatRoom from "./ChatRoom";
+import UserPage from "./UserPage";
 
 import { useState, useEffect } from "react";
 
@@ -101,6 +103,7 @@ function App() {
     <div className="App">
       <header>
         <i>
+          {/* TODO proper styling */}
           <AiFillMessage style={{ color: "rebeccapurple", fontSize: "2rem" }} />
         </i>
         MyChat
@@ -116,7 +119,10 @@ function App() {
         {isSignInModalOpen && <SignInModal auth={auth} user={user} />}
         {isRegisterModalOpen && <RegisterModal />}
         {user && !user.emailVerified && <VerificationModal />}
-        {user && userVerified && <ChatRoom firestore={firestore} auth={auth} />}
+        {user && userVerified && (
+          <UserPage firestore={firestore} auth={auth} user={user} />
+        )}
+        {/* {user && userVerified && <ChatRoom firestore={firestore} auth={auth} />} */}
       </section>
     </div>
   );
