@@ -1,31 +1,27 @@
 // add settings
 // add icon next to msg, but only first in a row, if no photo then first letters of name
 // make sign in buttons pretty
-// move chatroom to own file
 // add images
 // add emoji
 // add delay to send again button
 
 import "./App.css";
-import ChatMessage from "./ChatMessage";
+
 import Authentication from "./Authentication";
 import RegisterModal from "./RegisterModal";
 import SignInModal from "./SignInModal";
 import VerificationModal from "./VerificationModal";
+import ChatRoom from "./ChatRoom";
 
-import { useState, useRef, useEffect } from "react";
-import { AiOutlineSend } from "react-icons/ai";
-import { MdAttachFile } from "react-icons/md";
+import { useState, useEffect } from "react";
+
 import { AiFillMessage } from "react-icons/ai";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
-import TextareaAutosize from "react-textarea-autosize";
-
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const config = {
   // move api key to env, and config to separate file
@@ -85,7 +81,7 @@ function App() {
 
   useEffect(() => {
     // TODO this can be moved to register
-    sendVerificationEmail();
+    if (!user || !user.emailVerified) sendVerificationEmail();
   }, [user]);
 
   useEffect(() => {
@@ -113,110 +109,17 @@ function App() {
           auth={auth}
           setIsRegisterModalOpen={setIsRegisterModalOpen}
           setIsSignInModalOpen={setIsSignInModalOpen}
+          setUserVerified={setUserVerified}
         />
       </header>
       <section>
         {isSignInModalOpen && <SignInModal auth={auth} user={user} />}
         {isRegisterModalOpen && <RegisterModal />}
         {user && !user.emailVerified && <VerificationModal />}
-        {user && userVerified && <ChatRoom />}
+        {user && userVerified && <ChatRoom firestore={firestore} auth={auth} />}
       </section>
     </div>
   );
 }
 
-function ChatRoom() {
-  const dummy = useRef();
-  const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy("createdAt", "desc").limit(20);
-  const [messages] = useCollectionData(query, { idField: "id" });
-
-  const [formValue, setFormValue] = useState("");
-
-  const sendMessage = async (e) => {
-    e.preventDefault();
-
-    const { uid, photoURL } = auth.currentUser;
-
-    if (formValue) {
-      await messagesRef.add({
-        text: formValue,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        uid,
-        photoURL,
-      });
-
-      setFormValue("");
-    }
-  };
-
-  const handleTextArea = (e) => {
-    setFormValue(e.target.value);
-  };
-
-  const onKeyPress = (e) => {
-    if (e.keyCode === 13 && e.shiftKey === false) {
-      e.preventDefault();
-      sendMessage(e);
-    }
-  };
-
-  useEffect(() => {
-    dummy.current.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  return (
-    <div className="chat-room">
-      <div className="messages-container">
-        {messages &&
-          messages
-            .map((msg) => (
-              <ChatMessage
-                key={msg.id}
-                message={msg}
-                messageClass={
-                  msg && msg.uid === auth.currentUser.uid ? "sent" : "received"
-                }
-              />
-            ))
-            .reverse()}
-        <div ref={dummy}></div>
-      </div>
-
-      <div className="form-container">
-        <form onSubmit={sendMessage} onKeyDown={onKeyPress}>
-          <button className="form-button">
-            <MdAttachFile className="icon" />
-          </button>
-          <TextareaAutosize
-            value={formValue}
-            onChange={handleTextArea}
-            placeholder="Write a message..."
-            maxRows={3}
-          />
-          <button type="submit" className="form-button">
-            <AiOutlineSend className="icon" />
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
 export default App;
-
-// var docRef = firestore.collection("messages").doc("test");
-
-// docRef
-//   .get()
-//   .then((doc) => {
-//     if (doc.exists) {
-//       console.log("Document data:", doc.data());
-//     } else {
-//       // doc.data() will be undefined in this case
-//       console.log("No such document!");
-//     }
-//   })
-//   .catch((error) => {
-//     console.log("Error getting document:", error);
-//   });

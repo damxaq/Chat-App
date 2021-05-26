@@ -24,6 +24,7 @@ const Authentication = (props) => {
             onClick={() => {
               props.setIsSignInModalOpen(false);
               props.setIsRegisterModalOpen(true);
+              props.setUserVerified(false);
             }}
           >
             Sign Up
