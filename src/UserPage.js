@@ -1,3 +1,7 @@
+// TODO add waiting to make sure user is created in database before showing profiledata
+// chatroom inherites wrong styles from parent
+// when adding contact, empty message is created in room
+
 import React, { useState, useEffect } from "react";
 
 import ProfileData from "./ProfileData";
@@ -63,9 +67,7 @@ const UserPage = (props) => {
   }, [user, setAccountReady]);
 
   return (
-    <div className="user-page-container">
-      {accountReady && <ProfileData firestore={firestore} user={user} />}
-    </div>
+    <>{accountReady && <ProfileData firestore={firestore} user={user} />}</>
   );
 };
 

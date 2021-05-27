@@ -190,7 +190,7 @@ textarea {
   font-size: 5rem;
 }
 
-.user-page-container {
+.profile-data-container {
   color: white;
   font-size: 1.3rem;
 }
@@ -221,6 +221,80 @@ textarea {
   -webkit-appearance: none;
   font-size: 1.3rem;
   outline: none;
+}
+
+.contacts-container {
+  /* border: 1px solid red; */
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.contacts-container .contact {
+  min-width: 350px;
+  height: 5rem;
+  margin: auto;
+  margin-top: 1rem;
+  background-color: rgb(43, 43, 83);
+  border-radius: 10px;
+}
+
+.contact-container {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.contact-image-container {
+  height: 60%;
+  align-self: center;
+  padding-right: 1rem;
+  padding-left: 0.5rem;
+}
+
+.contact-image-container img {
+  height: 100%;
+  border-radius: 50%;
+}
+
+.contacts-container .contact {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.contacts-container .contact .cart {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  font-size: 1rem;
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.contact-text {
+}
+
+.delete-button-container {
+  /* transform: translateX(3rem); */
+}
+
+.delete-button-container button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-button {
+  font-size: 1.7rem;
 }
 
 ::-webkit-scrollbar {

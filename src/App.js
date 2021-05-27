@@ -6,6 +6,10 @@
 // add delay to send again button
 // add contacts
 // add main icon
+// add adding profile photo
+// add offline caching
+// add backgorund change and font
+// add deleting contacts
 
 import "./App.css";
 
@@ -13,7 +17,6 @@ import Authentication from "./Authentication";
 import RegisterModal from "./RegisterModal";
 import SignInModal from "./SignInModal";
 import VerificationModal from "./VerificationModal";
-import ChatRoom from "./ChatRoom";
 import UserPage from "./UserPage";
 
 import { useState, useEffect } from "react";
@@ -27,7 +30,7 @@ import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const config = {
-  // move api key to env, and config to separate file
+  //TODO move api key to env, and config to separate file
   apiKey: "AIzaSyCyPX4xnNg9Vo4CZa94bYaz-U38EaxWfIA",
   authDomain: "chat-app-627c6.firebaseapp.com",
   projectId: "chat-app-627c6",
@@ -123,7 +126,6 @@ function App() {
         {user && userVerified && (
           <UserPage firestore={firestore} auth={auth} user={user} />
         )}
-        {/* {user && userVerified && <ChatRoom firestore={firestore} auth={auth} />} */}
       </section>
     </div>
   );
