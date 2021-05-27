@@ -5,6 +5,7 @@
 // add emoji
 // add delay to send again button
 // add contacts
+// add main icon
 
 import "./App.css";
 

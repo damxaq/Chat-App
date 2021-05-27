@@ -190,6 +190,39 @@ textarea {
   font-size: 5rem;
 }
 
+.user-page-container {
+  color: white;
+  font-size: 1.3rem;
+}
+
+.search-form-container {
+  padding: 1rem;
+}
+
+.search-form {
+  display: inline;
+}
+
+.search-form input[type="text"] {
+  width: 200px;
+  height: 35px;
+  padding-right: 50px;
+  font-size: 1rem;
+  padding: 0 1rem;
+}
+
+.search-form input[type="submit"] {
+  margin-left: -50px;
+  height: 30px;
+  width: 50px;
+  background-color: transparent;
+  color: black;
+  border: 0;
+  -webkit-appearance: none;
+  font-size: 1.3rem;
+  outline: none;
+}
+
 ::-webkit-scrollbar {
   width: 3px;
 }
