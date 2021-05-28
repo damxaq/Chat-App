@@ -33,6 +33,7 @@ const ProfileData = (props) => {
       const user2 = searchedUser.id;
       const roomId = user1 > user2 ? user2 + user1 : user1 + user2;
 
+      setSearchedUser(undefined);
       const newContact = { ...searchedUser };
       newContact.roomId = roomId;
 
@@ -40,7 +41,6 @@ const ProfileData = (props) => {
       await profileRef.update({
         contacts: [...profileData[0].contacts, newContact],
       });
-      setSearchedUser(undefined);
     }
   };
 
@@ -69,6 +69,15 @@ const ProfileData = (props) => {
       .catch((error) => {
         console.log("Error getting documents: ", error);
       });
+  };
+
+  const removeContact = async (id) => {
+    const filteredContacts = profileData[0].contacts.filter(
+      (contact) => contact.id !== id
+    );
+    await profileRef.update({
+      contacts: filteredContacts,
+    });
   };
 
   return (
@@ -118,7 +127,7 @@ const ProfileData = (props) => {
                             </div>
                           </button>
                           <div className="delete-button-container">
-                            <button>
+                            <button onClick={() => removeContact(contact.id)}>
                               <MdDelete className="delete-button" />
                             </button>
                           </div>
