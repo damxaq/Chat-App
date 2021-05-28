@@ -5,6 +5,8 @@ import ChatRoom2 from "./ChatRoom2";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { MdDelete } from "react-icons/md";
+import { MdAddCircleOutline } from "react-icons/md";
+import { TiTickOutline } from "react-icons/ti";
 
 import "firebase/firestore";
 
@@ -102,7 +104,13 @@ const ProfileData = (props) => {
                             onClick={() => setChatRoomId(contact.roomId)}
                           >
                             <div className="contact-image-container">
-                              <img src={contact.avatar} alt={contact.name} />
+                              {contact.avatar ? (
+                                <img src={contact.avatar} alt={contact.name} />
+                              ) : (
+                                <div className="avatar-placeholder">
+                                  {contact.name.slice(0, 1).toUpperCase()}
+                                </div>
+                              )}
                             </div>
                             <div className="contact-text">
                               <p>{contact.name}</p>
@@ -128,16 +136,42 @@ const ProfileData = (props) => {
                     </form>
                   </div>
                   {searchedUser && (
-                    <div className="search-result-container">
-                      <div>{searchedUser.name}</div>
-                      <div>{searchedUser.email}</div>
-                      {profileData[0].contacts.find(
-                        (contact) => contact.email === searchedUser.email
-                      ) ? (
-                        <div>already in!</div>
-                      ) : (
-                        <button onClick={() => addUserToContacts()}>+</button>
-                      )}
+                    <div className="contacts-container search-result-container">
+                      <div className="contact-container">
+                        <div className="contact">
+                          <button className="cart" onClick={() => {}}>
+                            <div className="contact-image-container">
+                              {searchedUser.avatar ? (
+                                <img
+                                  src={searchedUser.avatar}
+                                  alt={searchedUser.name}
+                                />
+                              ) : (
+                                <div className="avatar-placeholder">
+                                  {searchedUser.name.slice(0, 1).toUpperCase()}
+                                </div>
+                              )}
+                            </div>
+                            <div className="contact-text">
+                              <p>{searchedUser.name}</p>
+                              <p>{searchedUser.email}</p>
+                            </div>
+                          </button>
+                          <div className="add-button-container">
+                            {profileData[0].contacts.find(
+                              (contact) => contact.email === searchedUser.email
+                            ) ? (
+                              <div className="contact-exist">
+                                <TiTickOutline />
+                              </div>
+                            ) : (
+                              <button onClick={() => addUserToContacts()}>
+                                <MdAddCircleOutline className="add-button" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>

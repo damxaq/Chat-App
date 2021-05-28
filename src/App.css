@@ -224,7 +224,6 @@ textarea {
 }
 
 .contacts-container {
-  /* border: 1px solid red; */
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -239,8 +238,11 @@ textarea {
   border-radius: 10px;
 }
 
+.contacts-container .contact:hover {
+  background-color: rgb(53, 53, 88);
+}
+
 .contact-container {
-  /* border: 1px solid red; */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -266,7 +268,6 @@ textarea {
 }
 
 .contacts-container .contact .cart {
-  /* border: 1px solid red; */
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -277,13 +278,7 @@ textarea {
   color: white;
   border: none;
   cursor: pointer;
-}
-
-.contact-text {
-}
-
-.delete-button-container {
-  /* transform: translateX(3rem); */
+  outline: none;
 }
 
 .delete-button-container button {
@@ -291,9 +286,49 @@ textarea {
   color: white;
   border: none;
   cursor: pointer;
+  outline: none;
+}
+
+.delete-button-container button:hover {
+  color: red;
 }
 
 .delete-button {
+  font-size: 1.7rem;
+}
+
+.avatar-placeholder {
+  padding: 1rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: "bold";
+  background-color: rebeccapurple;
+}
+
+.search-result-container .contact .cart {
+  cursor: auto;
+}
+
+.add-button-container button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.add-button-container .contact-exist {
+  cursor: auto;
+  outline: none;
+  font-size: 1.7rem;
+  color: green;
+}
+
+.add-button-container button:hover {
+  color: green;
+}
+
+.add-button {
   font-size: 1.7rem;
 }
 
