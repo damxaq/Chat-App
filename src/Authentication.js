@@ -8,7 +8,14 @@ const Authentication = (props) => {
     <div className="signup-buttons-container">
       {user && user.emailVerified ? (
         <div>
-          <button onClick={() => auth.signOut()}>Sign out</button>
+          <button
+            onClick={() => {
+              auth.signOut();
+              props.setIsSignInModalOpen(true);
+            }}
+          >
+            Sign out
+          </button>
         </div>
       ) : (
         <div>

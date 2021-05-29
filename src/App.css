@@ -23,12 +23,13 @@ body {
   top: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   padding: 1rem;
 }
 
 .logo {
   font-size: 2rem;
+  margin: auto;
   /* border: 1px solid red; */
 }
 
@@ -100,6 +101,10 @@ textarea {
   border-radius: 10px;
   display: flex;
   align-items: center;
+}
+
+.message p {
+  margin: 0.7rem 0;
 }
 
 .message.sent {
@@ -390,6 +395,33 @@ textarea {
 }
 .google-btn:active {
   background: #1669f2;
+}
+
+.navigation-container {
+  padding: 1rem;
+  position: absolute;
+  left: 0;
+}
+
+.navigation-container button {
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  background-color: transparent;
+  color: silver;
+  border: 3px solid rebeccapurple;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1rem;
+  outline: none;
+}
+
+.navigation-container button:hover {
+  background-color: rebeccapurple;
+}
+
+.navigation-container .active {
+  background-color: rebeccapurple;
 }
 
 .signup-buttons-container {

@@ -47,6 +47,7 @@ const UserPage = (props) => {
         if (querySnapshot.docs && querySnapshot.docs.length) {
           console.log("email exist");
           setAccountReady(true);
+          props.setIsContactModalOpen(true);
         } else {
           console.log("creating account");
           createAccount({
@@ -67,7 +68,20 @@ const UserPage = (props) => {
   }, [user, setAccountReady]);
 
   return (
-    <>{accountReady && <ProfileData firestore={firestore} user={user} />}</>
+    <>
+      {accountReady && (
+        <ProfileData
+          firestore={firestore}
+          user={user}
+          isSettingModalOpen={props.isSettingModalOpen}
+          isContactModalOpen={props.isContactModalOpen}
+          setIsSettingModalOpen={props.setIsSettingModalOpen}
+          setIsContactModalOpen={props.setIsContactModalOpen}
+          chatRoomId={props.chatRoomId}
+          setChatRoomId={props.setChatRoomId}
+        />
+      )}
+    </>
   );
 };
 

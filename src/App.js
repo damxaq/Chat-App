@@ -7,10 +7,13 @@
 // add offline caching
 // add backgorund change and font
 // load more messages button
+// too much prop drilling! use Context, Luke
+// add preview of most recent message
 
 import "./App.css";
 
 import Authentication from "./Authentication";
+import Navigation from "./Navigation";
 import RegisterModal from "./RegisterModal";
 import SignInModal from "./SignInModal";
 import VerificationModal from "./VerificationModal";
@@ -51,7 +54,10 @@ function App() {
   const [user] = useAuthState(auth);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+  const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [userVerified, setUserVerified] = useState(false);
+  const [chatRoomId, setChatRoomId] = useState(null);
 
   console.log(user);
 
@@ -83,6 +89,14 @@ function App() {
   };
 
   useEffect(() => {
+    if (!user) {
+      setIsSignInModalOpen(true);
+      setIsSettingModalOpen(false);
+      setIsContactModalOpen(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
     // TODO this can be moved to register
     if (!user || !user.emailVerified) sendVerificationEmail();
   }, [user]);
@@ -103,6 +117,19 @@ function App() {
   return (
     <div className="App">
       <header>
+        {user && userVerified && (
+          <Navigation
+            user={user}
+            auth={auth}
+            setIsSettingModalOpen={setIsSettingModalOpen}
+            setIsContactModalOpen={setIsContactModalOpen}
+            isSettingModalOpen={isSettingModalOpen}
+            isContactModalOpen={isContactModalOpen}
+            chatRoomId={chatRoomId}
+            setChatRoomId={setChatRoomId}
+          />
+        )}
+
         <h3 className="logo">
           <AiFillMessage className="logo-icon" />
           <i>MyChat</i>
@@ -122,7 +149,17 @@ function App() {
         {isRegisterModalOpen && <RegisterModal />}
         {user && !user.emailVerified && <VerificationModal />}
         {user && userVerified && (
-          <UserPage firestore={firestore} auth={auth} user={user} />
+          <UserPage
+            firestore={firestore}
+            auth={auth}
+            user={user}
+            isSettingModalOpen={isSettingModalOpen}
+            isContactModalOpen={isContactModalOpen}
+            setIsSettingModalOpen={setIsSettingModalOpen}
+            setIsContactModalOpen={setIsContactModalOpen}
+            chatRoomId={chatRoomId}
+            setChatRoomId={setChatRoomId}
+          />
         )}
       </section>
     </div>
