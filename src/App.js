@@ -1,6 +1,5 @@
 // add settings
 // add icon next to msg, but only first in a row, if no photo then first letters of name
-// make sign in buttons pretty
 // add images
 // add emoji
 // add main icon
@@ -114,6 +113,8 @@ function App() {
           setIsRegisterModalOpen={setIsRegisterModalOpen}
           setIsSignInModalOpen={setIsSignInModalOpen}
           setUserVerified={setUserVerified}
+          isRegisterModalOpen={isRegisterModalOpen}
+          isSignInModalOpen={isSignInModalOpen}
         />
       </header>
       <section>

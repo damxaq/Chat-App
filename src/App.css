@@ -29,7 +29,7 @@ body {
 
 .logo {
   font-size: 2rem;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 .logo .logo-icon {
@@ -129,7 +129,7 @@ textarea {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 0;
 }
 
 .register-form input {
@@ -158,6 +158,10 @@ textarea {
   cursor: pointer;
   margin: 1rem;
   outline: none;
+}
+
+.register-form button:hover {
+  background: #52c234;
 }
 
 .verification-container {
@@ -386,6 +390,33 @@ textarea {
 }
 .google-btn:active {
   background: #1669f2;
+}
+
+.signup-buttons-container {
+  padding: 1rem;
+  position: absolute;
+  right: 0;
+}
+
+.signup-buttons-container button {
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  background-color: transparent;
+  color: silver;
+  border: 3px solid rebeccapurple;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1rem;
+  outline: none;
+}
+
+.signup-buttons-container button:hover {
+  background-color: rebeccapurple;
+}
+
+.signup-buttons-container .active {
+  background-color: rebeccapurple;
 }
 
 ::-webkit-scrollbar {

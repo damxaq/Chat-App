@@ -1,17 +1,19 @@
 import React from "react";
-import SignOut from "./SignOut";
 
 const Authentication = (props) => {
   const user = props.user;
   const auth = props.auth;
 
   return (
-    <div>
+    <div className="signup-buttons-container">
       {user && user.emailVerified ? (
-        <SignOut auth={auth} />
+        <div>
+          <button onClick={() => auth.signOut()}>Sign out</button>
+        </div>
       ) : (
         <div>
           <button
+            className={props.isSignInModalOpen ? "active" : ""}
             onClick={() => {
               props.setIsRegisterModalOpen(false);
               props.setIsSignInModalOpen(true);
@@ -20,6 +22,7 @@ const Authentication = (props) => {
             Sign In
           </button>
           <button
+            className={props.isRegisterModalOpen ? "active" : ""}
             onClick={() => {
               props.setIsSignInModalOpen(false);
               props.setIsRegisterModalOpen(true);
