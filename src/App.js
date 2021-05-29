@@ -3,13 +3,11 @@
 // make sign in buttons pretty
 // add images
 // add emoji
-// add delay to send again button
-// add contacts
 // add main icon
 // add adding profile photo
 // add offline caching
 // add backgorund change and font
-// add deleting contacts
+// load more messages button
 
 import "./App.css";
 
@@ -106,11 +104,10 @@ function App() {
   return (
     <div className="App">
       <header>
-        <i>
-          {/* TODO proper styling */}
-          <AiFillMessage style={{ color: "rebeccapurple", fontSize: "2rem" }} />
-        </i>
-        MyChat
+        <h3 className="logo">
+          <AiFillMessage className="logo-icon" />
+          <i>MyChat</i>
+        </h3>
         <Authentication
           user={user}
           auth={auth}
