@@ -30,6 +30,7 @@ body {
 .logo {
   font-size: 2rem;
   margin: auto;
+  cursor: default;
   /* border: 1px solid red; */
 }
 
@@ -44,8 +45,10 @@ body {
 
 .App section {
   /* border: 1px solid rebeccapurple; */
-  width: 80vw;
+  /* width: 80vw; */
   margin: auto;
+  margin-left: 5rem;
+  margin-right: 5rem;
 }
 
 .chat-room {
@@ -81,7 +84,10 @@ textarea {
 }
 
 .messages-container {
-  /* border: 1px solid rebeccapurple; */
+  border: 1px solid rebeccapurple;
+  border-top: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -244,10 +250,11 @@ textarea {
   -webkit-appearance: none;
   font-size: 1.3rem;
   outline: none;
+  cursor: pointer;
 }
 
 .contacts-container {
-  padding: 1rem;
+  padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
 }
@@ -304,6 +311,127 @@ textarea {
   outline: none;
 }
 
+.avatar-placeholder {
+  padding: 1rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: "bold";
+  background-color: rebeccapurple;
+}
+
+.hamburger-container {
+  position: absolute;
+  left: 1rem;
+  padding: 0.5rem 0;
+}
+
+.hamburger-container button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 2rem;
+  color: silver;
+  cursor: pointer;
+}
+
+.side-contacts {
+  position: absolute;
+  left: 1.5rem;
+  padding: 1rem 0;
+  margin-top: 2rem;
+  font-size: 1rem;
+  color: white;
+}
+
+.side-contacts div {
+  font-size: 1rem;
+  color: white;
+}
+
+.side-contacts-container {
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.side-contact {
+  min-width: 200px;
+  height: 4rem;
+  margin: auto;
+  margin-top: 0.5rem;
+  background-color: rgb(43, 43, 83);
+  border-radius: 10px;
+}
+
+.side-contact:hover {
+  background-color: rgb(53, 53, 88);
+}
+
+.side-contact.active {
+  background-color: rgb(53, 53, 88);
+}
+
+.side-contact-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left !important;
+}
+
+.side-contact-image-container {
+  align-self: center;
+  padding-right: 0.4rem;
+  padding-left: 0.25rem;
+}
+
+.side-contact-image-container img {
+  max-height: 1rem;
+  max-width: 1rem;
+  border-radius: 50%;
+}
+
+.side-contacts-container .side-contact {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.side-contacts-container .side-contact .side-cart {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.side-contact-text p {
+  font-size: 0.8rem;
+  margin: 0.4rem 0.2rem;
+}
+
+.side-avatar-placeholder {
+  padding-top: 0.1rem;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  background-color: rebeccapurple;
+  font-size: 0.8rem !important;
+  font-weight: bold;
+  text-align: center;
+}
+
+.side-contact-first-row {
+  display: flex;
+  flex-direction: row;
+}
+
 .delete-button-container button {
   background-color: transparent;
   color: white;
@@ -318,14 +446,6 @@ textarea {
 
 .delete-button {
   font-size: 1.7rem;
-}
-
-.avatar-placeholder {
-  padding: 1rem;
-  border-radius: 50%;
-  font-size: 1rem;
-  font-weight: "bold";
-  background-color: rebeccapurple;
 }
 
 .search-result-container .contact .cart {

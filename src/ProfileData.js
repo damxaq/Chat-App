@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import ChatRoom2 from "./ChatRoom2";
+import ChatRoom from "./ChatRoom";
 import Settings from "./Settings";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -18,6 +18,7 @@ const ProfileData = (props) => {
   const [profileData] = useCollectionData(query, { idField: "id" });
   const profileRef = firestore.collection("accounts").doc(props.user.uid);
   const rooms = firestore.collection("rooms");
+  const [contacts, setContacts] = useState([]);
 
   const [searchedUser, setSearchedUser] = useState(undefined);
 
@@ -43,6 +44,14 @@ const ProfileData = (props) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (profileData) {
+      setContacts(profileData[0].contacts);
+    } else {
+      setContacts([]);
+    }
+  }, [profileData]);
 
   const createRoom = async (roomId) => {
     await rooms.doc(roomId).collection("messages").doc().set({});
@@ -85,29 +94,33 @@ const ProfileData = (props) => {
       {profileData && (
         <div>
           {props.chatRoomId ? (
-            <ChatRoom2
+            <ChatRoom
               firestore={firestore}
               user={profileData[0]}
               roomId={props.chatRoomId}
+              setSideContactsVisible={props.setSideContactsVisible}
+              sideContactsVisible={props.sideContactsVisible}
+              contacts={contacts}
+              setChatRoomId={props.setChatRoomId}
             />
           ) : (
             <div className="profile-data-container">
-              <div>
+              {/* <div>
                 <img
                   src={profileData[0].avatar}
                   alt={profileData[0].name}
                   style={{ borderRadius: "50%" }}
                 />
-              </div>
+              </div> */}
               <div>{profileData[0].email}</div>
               <div>{profileData[0].name}</div>
               {props.isContactModalOpen && (
                 <div>
                   <div>
-                    <h3>Your contacts my Lord:</h3>
+                    <h3>Your contacts:</h3>
                     <div className="contacts-container">
-                      {profileData[0].contacts &&
-                        profileData[0].contacts.map((contact) => (
+                      {contacts &&
+                        contacts.map((contact) => (
                           <div className="contact-container" key={contact.id}>
                             <div className="contact">
                               <button

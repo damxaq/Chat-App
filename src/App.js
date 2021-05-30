@@ -2,13 +2,13 @@
 // add icon next to msg, but only first in a row, if no photo then first letters of name
 // add images
 // add emoji
-// add main icon
 // add adding profile photo
 // add offline caching
 // add backgorund change and font
 // load more messages button
 // too much prop drilling! use Context, Luke
 // add preview of most recent message
+// add contacts menu on side
 
 import "./App.css";
 
@@ -18,6 +18,7 @@ import RegisterModal from "./RegisterModal";
 import SignInModal from "./SignInModal";
 import VerificationModal from "./VerificationModal";
 import UserPage from "./UserPage";
+import SideContacts from "./SideContacts";
 
 import { useState, useEffect } from "react";
 
@@ -58,6 +59,7 @@ function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [userVerified, setUserVerified] = useState(false);
   const [chatRoomId, setChatRoomId] = useState(null);
+  const [sideContactsVisible, setSideContactsVisible] = useState(false);
 
   console.log(user);
 
@@ -144,7 +146,12 @@ function App() {
           isSignInModalOpen={isSignInModalOpen}
         />
       </header>
-      <section>
+      <section
+        style={{
+          marginLeft: `${sideContactsVisible ? "15rem" : " 5rem"}`,
+          transition: "margin 0.2s",
+        }}
+      >
         {isSignInModalOpen && <SignInModal auth={auth} user={user} />}
         {isRegisterModalOpen && <RegisterModal />}
         {user && !user.emailVerified && <VerificationModal />}
@@ -159,6 +166,8 @@ function App() {
             setIsContactModalOpen={setIsContactModalOpen}
             chatRoomId={chatRoomId}
             setChatRoomId={setChatRoomId}
+            setSideContactsVisible={setSideContactsVisible}
+            sideContactsVisible={sideContactsVisible}
           />
         )}
       </section>

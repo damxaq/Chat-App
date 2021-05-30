@@ -79,6 +79,8 @@ const UserPage = (props) => {
           setIsContactModalOpen={props.setIsContactModalOpen}
           chatRoomId={props.chatRoomId}
           setChatRoomId={props.setChatRoomId}
+          setSideContactsVisible={props.setSideContactsVisible}
+          sideContactsVisible={props.sideContactsVisible}
         />
       )}
     </>

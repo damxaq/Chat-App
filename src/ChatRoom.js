@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import ChatMessage from "./ChatMessage";
+import SideContacts from "./SideContacts";
 import { AiOutlineSend } from "react-icons/ai";
 import { MdAttachFile } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 import TextareaAutosize from "react-textarea-autosize";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -12,9 +14,13 @@ import "firebase/firestore";
 
 const ChatRoom = (props) => {
   const firestore = props.firestore;
-  const auth = props.auth;
+  const user = props.user;
+  const roomId = props.roomId;
   const dummy = useRef();
-  const messagesRef = firestore.collection("messages");
+  const messagesRef = firestore
+    .collection("rooms")
+    .doc(roomId)
+    .collection("messages");
   const query = messagesRef.orderBy("createdAt", "desc").limit(20);
   const [messages] = useCollectionData(query, { idField: "id" });
 
@@ -23,14 +29,13 @@ const ChatRoom = (props) => {
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    const { uid, photoURL } = auth.currentUser;
+    const { id, photoURL } = user;
 
     if (formValue) {
       await messagesRef.add({
         text: formValue,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        uid,
-        photoURL,
+        uid: id,
       });
 
       setFormValue("");
@@ -54,6 +59,24 @@ const ChatRoom = (props) => {
 
   return (
     <div className="chat-room">
+      <div className="hamburger-container">
+        <button
+          onClick={() =>
+            props.setSideContactsVisible(!props.sideContactsVisible)
+          }
+        >
+          <GiHamburgerMenu />
+        </button>
+      </div>
+      {props.sideContactsVisible && (
+        <div className="side-contacts">
+          <SideContacts
+            contacts={props.contacts}
+            setChatRoomId={props.setChatRoomId}
+            roomId={roomId}
+          />
+        </div>
+      )}
       <div className="messages-container">
         {messages &&
           messages
@@ -61,9 +84,7 @@ const ChatRoom = (props) => {
               <ChatMessage
                 key={msg.id}
                 message={msg}
-                messageClass={
-                  msg && msg.uid === auth.currentUser.uid ? "sent" : "received"
-                }
+                messageClass={msg && msg.uid === user.id ? "sent" : "received"}
               />
             ))
             .reverse()}
