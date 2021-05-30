@@ -23,6 +23,7 @@ const ChatRoom = (props) => {
     .collection("messages");
   const query = messagesRef.orderBy("createdAt", "desc").limit(20);
   const [messages] = useCollectionData(query, { idField: "id" });
+  const name = user.contacts.filter((contact) => contact.roomId === roomId);
 
   const [formValue, setFormValue] = useState("");
 
@@ -78,6 +79,9 @@ const ChatRoom = (props) => {
         </div>
       )}
       <div className="messages-container">
+        <div className="room-title-container">
+          <div className="room-title">{name[0].name}</div>
+        </div>
         {messages &&
           messages
             .map((msg) => (

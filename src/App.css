@@ -56,6 +56,25 @@ body {
   flex-direction: column;
 }
 
+.room-title-container {
+  font-size: 0.6rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: white;
+}
+
+.room-title {
+  background-color: rebeccapurple;
+  border: 1px solid rebeccapurple;
+  padding: 0.4rem;
+  border-top: none;
+  max-width: fit-content;
+  margin: auto;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
 .form-container {
   /* border: 1px solid rgba(104, 53, 155, 0.1); */
 }
@@ -66,7 +85,6 @@ form {
   display: flex;
   justify-content: space-between;
   height: auto;
-  /* border: 1px solid white; */
   margin-top: 1rem;
 }
 
@@ -323,6 +341,7 @@ textarea {
   position: absolute;
   left: 1rem;
   padding: 0.5rem 0;
+  z-index: 1;
 }
 
 .hamburger-container button {

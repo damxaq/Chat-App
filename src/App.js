@@ -4,11 +4,11 @@
 // add emoji
 // add adding profile photo
 // add offline caching
-// add backgorund change and font
 // load more messages button
 // too much prop drilling! use Context, Luke
 // add preview of most recent message
-// add contacts menu on side
+// add scroll to contacts and side contacts
+// add time of message
 
 import "./App.css";
 
@@ -18,7 +18,6 @@ import RegisterModal from "./RegisterModal";
 import SignInModal from "./SignInModal";
 import VerificationModal from "./VerificationModal";
 import UserPage from "./UserPage";
-import SideContacts from "./SideContacts";
 
 import { useState, useEffect } from "react";
 
