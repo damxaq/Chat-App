@@ -1,8 +1,6 @@
 import React from "react";
 
 const SideContacts = (props) => {
-  console.log("props.contacts", props.contacts);
-  console.log(props.roomId);
   return (
     <div className="side-contacts-container">
       <p>Contacts:</p>

@@ -23,7 +23,10 @@ const ChatRoom = (props) => {
     .collection("messages");
   const query = messagesRef.orderBy("createdAt", "desc").limit(20);
   const [messages] = useCollectionData(query, { idField: "id" });
-  const name = user.contacts.filter((contact) => contact.roomId === roomId);
+  const chatGuest = user.contacts.filter(
+    (contact) => contact.roomId === roomId
+  )[0];
+  const [sideContactsVisible, setSideContactsVisible] = useState(false);
 
   const [formValue, setFormValue] = useState("");
 
@@ -59,17 +62,19 @@ const ChatRoom = (props) => {
   }, [messages]);
 
   return (
-    <div className="chat-room">
+    <div
+      className="chat-room"
+      style={{
+        marginLeft: `${sideContactsVisible ? "10rem" : "0"}`,
+        transition: "margin 0.2s",
+      }}
+    >
       <div className="hamburger-container">
-        <button
-          onClick={() =>
-            props.setSideContactsVisible(!props.sideContactsVisible)
-          }
-        >
+        <button onClick={() => setSideContactsVisible(!sideContactsVisible)}>
           <GiHamburgerMenu />
         </button>
       </div>
-      {props.sideContactsVisible && (
+      {sideContactsVisible && (
         <div className="side-contacts">
           <SideContacts
             contacts={props.contacts}
@@ -80,7 +85,7 @@ const ChatRoom = (props) => {
       )}
       <div className="messages-container">
         <div className="room-title-container">
-          <div className="room-title">{name[0].name}</div>
+          <div className="room-title">{chatGuest.name}</div>
         </div>
         {messages &&
           messages

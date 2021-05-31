@@ -98,20 +98,18 @@ const ProfileData = (props) => {
               firestore={firestore}
               user={profileData[0]}
               roomId={props.chatRoomId}
-              setSideContactsVisible={props.setSideContactsVisible}
-              sideContactsVisible={props.sideContactsVisible}
               contacts={contacts}
               setChatRoomId={props.setChatRoomId}
             />
           ) : (
             <div className="profile-data-container">
-              {/* <div>
+              <div>
                 <img
                   src={profileData[0].avatar}
                   alt={profileData[0].name}
                   style={{ borderRadius: "50%" }}
                 />
-              </div> */}
+              </div>
               <div>{profileData[0].email}</div>
               <div>{profileData[0].name}</div>
               {props.isContactModalOpen && (
@@ -213,7 +211,13 @@ const ProfileData = (props) => {
                   </div>
                 </div>
               )}
-              {props.isSettingModalOpen && <Settings />}
+              {props.isSettingModalOpen && (
+                <Settings
+                  firestore={firestore}
+                  profileData={profileData}
+                  profileRef={profileRef}
+                />
+              )}
             </div>
           )}
         </div>

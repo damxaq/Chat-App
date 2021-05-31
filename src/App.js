@@ -9,6 +9,8 @@
 // add preview of most recent message
 // add scroll to contacts and side contacts
 // add time of message
+// add asking if really want to delete contact
+// add main icon
 
 import "./App.css";
 
@@ -58,7 +60,6 @@ function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [userVerified, setUserVerified] = useState(false);
   const [chatRoomId, setChatRoomId] = useState(null);
-  const [sideContactsVisible, setSideContactsVisible] = useState(false);
 
   console.log(user);
 
@@ -145,12 +146,7 @@ function App() {
           isSignInModalOpen={isSignInModalOpen}
         />
       </header>
-      <section
-        style={{
-          marginLeft: `${sideContactsVisible ? "15rem" : " 5rem"}`,
-          transition: "margin 0.2s",
-        }}
-      >
+      <section>
         {isSignInModalOpen && <SignInModal auth={auth} user={user} />}
         {isRegisterModalOpen && <RegisterModal />}
         {user && !user.emailVerified && <VerificationModal />}
@@ -165,8 +161,6 @@ function App() {
             setIsContactModalOpen={setIsContactModalOpen}
             chatRoomId={chatRoomId}
             setChatRoomId={setChatRoomId}
-            setSideContactsVisible={setSideContactsVisible}
-            sideContactsVisible={sideContactsVisible}
           />
         )}
       </section>
