@@ -11,6 +11,8 @@
 // add time of message
 // add asking if really want to delete contact
 // add main icon
+// add periodical contacts update
+// maybe new collection with all accounts and date of last modification
 
 import "./App.css";
 

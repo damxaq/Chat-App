@@ -9,7 +9,7 @@ const Settings = (props) => {
   const profileData = props.profileData;
   const profileRef = props.profileRef;
 
-  const ALLOWED_SIZE = 100000;
+  const ALLOWED_SIZE = 500000;
   var storageRef = firebase.storage().ref();
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -32,8 +32,18 @@ const Settings = (props) => {
     });
   };
 
+  const updateName = async (e) => {
+    e.preventDefault();
+    const newName = e.target[0].value;
+    if (newName !== profileData.name) {
+      e.target[0].value = "";
+      await profileRef.update({
+        name: newName,
+      });
+    }
+  };
+
   useEffect(() => {
-    console.log(selectedFile);
     if (
       selectedFile &&
       selectedFile.type === "image/jpeg" &&
@@ -88,28 +98,32 @@ const Settings = (props) => {
 
   return (
     <div>
-      Settings
+      <h4>Change Profile Picture:</h4>
       <div>
-        <h3>Upload Profile Photo</h3>
+        <input type="file" onChange={onFileChange} />
+      </div>
+      {selectedFile && (
         <div>
-          <input type="file" onChange={onFileChange} />
+          <p>File Name: {selectedFile.name}</p>
+          <p>File Type: {selectedFile.type}</p>
+          <p>File Size: {selectedFile.size}</p>
         </div>
-        {selectedFile && (
-          <div>
-            <p>File Name: {selectedFile.name}</p>
-            <p>File Type: {selectedFile.type}</p>
-            <p>File Size: {selectedFile.size}</p>
-          </div>
-        )}
-        {selectedFile && selectedFile.size > ALLOWED_SIZE && (
-          <div>File too big! 100kB maximum</div>
-        )}
-        {selectedFile && selectedFile.type !== "image/jpeg" && (
-          <div>Wrong type of file!</div>
-        )}
-        {selectedFile && fileCorrect && (
-          <button onClick={onFileUpload}>Upload!</button>
-        )}
+      )}
+      {selectedFile && selectedFile.size > ALLOWED_SIZE && (
+        <p>File too big! 100kB maximum</p>
+      )}
+      {selectedFile && selectedFile.type !== "image/jpeg" && (
+        <p>Wrong type of file!</p>
+      )}
+      {selectedFile && fileCorrect && (
+        <button onClick={onFileUpload}>Upload!</button>
+      )}
+      <h4>Change Name:</h4>
+      <div className="change-name-form">
+        <form onSubmit={updateName}>
+          <input type="text" placeholder={profileData.name} />
+          <button type="submit">Submit</button>
+        </form>
       </div>
     </div>
   );

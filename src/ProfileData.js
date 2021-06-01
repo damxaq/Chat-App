@@ -103,7 +103,7 @@ const ProfileData = (props) => {
             />
           ) : (
             <div className="profile-data-container">
-              <div>
+              <div className="profile-photo">
                 <img
                   src={profileData[0].avatar}
                   alt={profileData[0].name}
@@ -214,7 +214,7 @@ const ProfileData = (props) => {
               {props.isSettingModalOpen && (
                 <Settings
                   firestore={firestore}
-                  profileData={profileData}
+                  profileData={profileData[0]}
                   profileRef={profileRef}
                 />
               )}

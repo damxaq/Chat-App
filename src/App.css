@@ -242,6 +242,11 @@ textarea {
   font-size: 1.3rem;
 }
 
+.profile-photo img {
+  width: 6rem;
+  height: 6rem;
+}
+
 .search-form-container {
   padding: 1rem;
 }
@@ -297,7 +302,8 @@ textarea {
 }
 
 .contact-image-container {
-  height: 60%;
+  height: 3rem;
+  width: 3rem;
   align-self: center;
   padding-right: 1rem;
   padding-left: 0.5rem;
@@ -305,6 +311,7 @@ textarea {
 
 .contact-image-container img {
   height: 100%;
+  width: 100%;
   border-radius: 50%;
 }
 
@@ -588,6 +595,15 @@ textarea {
 
 .signup-buttons-container .active {
   background-color: rebeccapurple;
+}
+
+.change-name-form {
+  display: flex;
+  justify-content: center;
+}
+
+.change-name-form form {
+  justify-content: center;
 }
 
 ::-webkit-scrollbar {
