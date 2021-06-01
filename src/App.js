@@ -1,8 +1,6 @@
-// add settings
 // add icon next to msg, but only first in a row, if no photo then first letters of name
 // add images
 // add emoji
-// add adding profile photo
 // add offline caching
 // load more messages button
 // too much prop drilling! use Context, Luke
@@ -10,7 +8,6 @@
 // add scroll to contacts and side contacts
 // add time of message
 // add asking if really want to delete contact
-// add main icon
 // add periodical contacts update
 // maybe new collection with all accounts and date of last modification
 
