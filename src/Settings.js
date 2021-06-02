@@ -10,7 +10,7 @@ const Settings = (props) => {
   const profileRef = props.profileRef;
 
   const ALLOWED_SIZE = 500000;
-  var storageRef = firebase.storage().ref();
+  const storageRef = firebase.storage().ref();
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileCorrect, setfileCorrect] = useState(false);

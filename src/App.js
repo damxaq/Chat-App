@@ -10,6 +10,7 @@
 // add asking if really want to delete contact
 // add periodical contacts update
 // maybe new collection with all accounts and date of last modification
+// add image loading spinner in chatroom
 
 import "./App.css";
 
