@@ -1,5 +1,7 @@
 import React from "react";
 
+import { FiLogOut } from "react-icons/fi";
+
 const Authentication = (props) => {
   const user = props.user;
   const auth = props.auth;
@@ -14,7 +16,10 @@ const Authentication = (props) => {
               props.setIsSignInModalOpen(true);
             }}
           >
-            Sign out
+            <div className="nav-button-holder">
+              <FiLogOut className="nav-button-holder-icon" />
+              <span>Sign out</span>
+            </div>
           </button>
         </div>
       ) : (

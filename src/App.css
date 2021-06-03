@@ -212,12 +212,6 @@ textarea {
   cursor: pointer;
 }
 
-@media only screen and (max-width: 700px) {
-  .modal-content {
-    width: 100%;
-  }
-}
-
 .form-button {
   background-color: transparent;
   height: 3rem;
@@ -725,6 +719,15 @@ textarea {
   cursor: pointer;
 }
 
+.nav-button-holder {
+  display: flex;
+  flex-direction: row;
+}
+
+.nav-button-holder-icon {
+  display: none;
+}
+
 ::-webkit-scrollbar {
   width: 3px;
 }
@@ -740,4 +743,18 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: white !important;
+}
+
+@media only screen and (max-width: 700px) {
+  .modal-content {
+    width: 100%;
+  }
+
+  .nav-button-holder span {
+    display: none;
+  }
+
+  .nav-button-holder-icon {
+    display: block;
+  }
 }
