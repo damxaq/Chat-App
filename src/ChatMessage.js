@@ -15,7 +15,7 @@ const ChatMessage = (props) => {
             {photoURL ? (
               <img src={photoURL} alt="img" />
             ) : (
-              <div className="side-avatar-placeholder">
+              <div className="chat-avatar-placeholder">
                 {guestName.slice(0, 1).toUpperCase()}
               </div>
             )}
