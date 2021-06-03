@@ -34,13 +34,13 @@ const ChatRoom = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [formValue, setFormValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    console.log("sendMessage", e);
-
     if (selectedFile) {
+      setLoading(true);
       console.log(selectedFile);
       uploadImage(selectedFile);
     }
@@ -71,6 +71,7 @@ const ChatRoom = (props) => {
   };
 
   const uploadImage = async (file) => {
+    cancelImage();
     const timestamp = Math.round(new Date().getTime() / 1000).toString();
     const newFile = timestamp + file.name;
 
@@ -107,8 +108,6 @@ const ChatRoom = (props) => {
       },
       () => {
         uploadTask.snapshot.ref.getDownloadURL().then(async (downloadURL) => {
-          console.log("File available at", downloadURL);
-          cancelImage();
           imageFileRef.current.value = "";
           await messagesRef.add({
             text: downloadURL,
@@ -116,6 +115,7 @@ const ChatRoom = (props) => {
             uid: user.id,
             isPhoto: true,
           });
+          setLoading(false);
         });
       }
     );
@@ -230,9 +230,13 @@ const ChatRoom = (props) => {
             placeholder="Write a message..."
             maxRows={3}
           />
-          <button type="submit" className="form-button">
-            <AiOutlineSend className="icon" />
-          </button>
+          {loading ? (
+            <div class="loader"></div>
+          ) : (
+            <button type="submit" className="form-button">
+              <AiOutlineSend className="icon" />
+            </button>
+          )}
         </form>
       </div>
     </div>

@@ -7,10 +7,9 @@
 // add asking if really want to delete contact
 // add periodical contacts update
 // maybe new collection with all accounts and date of last modification
-// add image loading spinner in chatroom and checking if image is image
+// add in chatroom checking if image is image
 // profileData is wiped out when there is problem with loading site
 // responsivenes
-// add random text or timestamp to image name before upload to avoid overwriting
 
 import "./App.css";
 

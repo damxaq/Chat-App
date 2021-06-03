@@ -75,7 +75,7 @@ body {
 }
 
 .form-container {
-  /* border: 1px solid rgba(104, 53, 155, 0.1); */
+  min-width: 20rem;
 }
 
 form {
@@ -728,6 +728,25 @@ textarea {
   display: none;
 }
 
+.loader {
+  margin: 0.3rem;
+  border: 6px solid rgba(0, 0, 0, 0.3);
+  border-top: 6px solid rebeccapurple;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 ::-webkit-scrollbar {
   width: 3px;
 }
@@ -756,5 +775,18 @@ input:-webkit-autofill:active {
 
   .nav-button-holder-icon {
     display: block;
+  }
+
+  textarea {
+    font-size: 1.3rem;
+  }
+
+  .hamburger-container {
+    display: none;
+  }
+
+  .App section {
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 }
