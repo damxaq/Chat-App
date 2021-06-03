@@ -40,6 +40,11 @@ const ChatRoom = (props) => {
 
     console.log("sendMessage", e);
 
+    if (selectedFile) {
+      console.log(selectedFile);
+      uploadImage(selectedFile);
+    }
+
     const { id, photoURL } = user;
 
     if (formValue) {
@@ -47,14 +52,10 @@ const ChatRoom = (props) => {
         text: formValue,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         uid: id,
+        isPhoto: false,
       });
 
       setFormValue("");
-    }
-
-    if (selectedFile) {
-      console.log(selectedFile);
-      uploadImage(selectedFile);
     }
   };
 
@@ -69,7 +70,7 @@ const ChatRoom = (props) => {
     }
   };
 
-  const uploadImage = (file) => {
+  const uploadImage = async (file) => {
     var metadata = {
       contentType: "image/jpeg",
     };
@@ -104,9 +105,16 @@ const ChatRoom = (props) => {
         }
       },
       () => {
-        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+        uploadTask.snapshot.ref.getDownloadURL().then(async (downloadURL) => {
           console.log("File available at", downloadURL);
           cancelImage();
+          imageFileRef.current.value = "";
+          await messagesRef.add({
+            text: downloadURL,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            uid: user.id,
+            isPhoto: true,
+          });
         });
       }
     );
@@ -122,6 +130,7 @@ const ChatRoom = (props) => {
   };
 
   const onFileChange = async (event) => {
+    console.log("event", event);
     const file = event.target.files[0];
     setSelectedFile(file);
     const url = await readURL(file);
@@ -129,14 +138,12 @@ const ChatRoom = (props) => {
   };
 
   const handleImageAttach = (e) => {
-    console.log(e);
     e.preventDefault();
     console.log(imageFileRef);
     imageFileRef.current.click();
   };
 
   const cancelImage = () => {
-    console.log("cancel");
     setSelectedFile(null);
     setImageData(null);
   };

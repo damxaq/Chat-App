@@ -91,7 +91,7 @@ const ProfileData = (props) => {
 
   return (
     <>
-      {profileData && (
+      {profileData && profileData.length && (
         <div>
           {props.chatRoomId ? (
             <ChatRoom
