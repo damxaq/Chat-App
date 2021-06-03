@@ -184,6 +184,10 @@ const ChatRoom = (props) => {
               <ChatMessage
                 key={msg.id}
                 message={msg}
+                guestName={chatGuest.name}
+                photoURL={
+                  msg && msg.uid === user.id ? chatGuest.avatar : user.avatar
+                }
                 messageClass={msg && msg.uid === user.id ? "sent" : "received"}
               />
             ))
