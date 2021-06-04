@@ -104,9 +104,8 @@ const Settings = (props) => {
       </div>
       {selectedFile && (
         <div>
-          <p>File Name: {selectedFile.name}</p>
           <p>File Type: {selectedFile.type}</p>
-          <p>File Size: {selectedFile.size}</p>
+          <p>File Size: {Math.round(selectedFile.size / 1000)} KB</p>
         </div>
       )}
       {selectedFile && selectedFile.size > ALLOWED_SIZE && (

@@ -10,6 +10,7 @@
 // add in chatroom checking if image is image
 // profileData is wiped out when there is problem with loading site
 // responsivenes
+// add timestamp to uploaded avatars
 
 import "./App.css";
 

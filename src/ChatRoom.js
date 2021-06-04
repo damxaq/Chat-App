@@ -36,6 +36,8 @@ const ChatRoom = (props) => {
   const [formValue, setFormValue] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const ALLOWED_SIZE = 10000000;
+
   const sendMessage = async (e) => {
     e.preventDefault();
 
@@ -94,6 +96,7 @@ const ChatRoom = (props) => {
         }
       },
       (error) => {
+        setLoading(false);
         switch (error.code) {
           case "storage/unauthorized":
             console.log("storage/unauthorized");
@@ -133,9 +136,13 @@ const ChatRoom = (props) => {
   const onFileChange = async (event) => {
     console.log("event", event);
     const file = event.target.files[0];
-    setSelectedFile(file);
-    const url = await readURL(file);
-    setImageData(url);
+    if (file && file.type === "image/jpeg" && file.size < ALLOWED_SIZE) {
+      setSelectedFile(file);
+      const url = await readURL(file);
+      setImageData(url);
+    } else {
+      console.log("wrong file!");
+    }
   };
 
   const handleImageAttach = (e) => {
@@ -154,92 +161,104 @@ const ChatRoom = (props) => {
   }, [messages]);
 
   return (
-    <div
-      className="chat-room"
-      style={{
-        marginLeft: `${sideContactsVisible ? "10rem" : "0"}`,
-        transition: "margin 0.2s",
-      }}
-    >
-      <div className="hamburger-container">
-        <button onClick={() => setSideContactsVisible(!sideContactsVisible)}>
-          <GiHamburgerMenu />
-        </button>
-      </div>
-      {sideContactsVisible && (
-        <div className="side-contacts">
-          <SideContacts
-            contacts={props.contacts}
-            setChatRoomId={props.setChatRoomId}
-            roomId={roomId}
-          />
-        </div>
-      )}
-      <div className="messages-container">
-        <div className="room-title-container">
-          <div className="room-title">{chatGuest.name}</div>
-        </div>
-        {messages &&
-          messages
-            .map((msg) => (
-              <ChatMessage
-                key={msg.id}
-                message={msg}
-                guestName={chatGuest.name}
-                photoURL={
-                  msg && msg.uid === user.id ? chatGuest.avatar : user.avatar
-                }
-                messageClass={msg && msg.uid === user.id ? "sent" : "received"}
+    <>
+      {chatGuest && (
+        <div
+          className="chat-room"
+          style={{
+            marginLeft: `${sideContactsVisible ? "10rem" : "0"}`,
+            transition: "margin 0.2s",
+          }}
+        >
+          <div className="hamburger-container">
+            <button
+              onClick={() => setSideContactsVisible(!sideContactsVisible)}
+            >
+              <GiHamburgerMenu />
+            </button>
+          </div>
+          {sideContactsVisible && (
+            <div className="side-contacts">
+              <SideContacts
+                contacts={props.contacts}
+                setChatRoomId={props.setChatRoomId}
+                roomId={roomId}
               />
-            ))
-            .reverse()}
-        <div ref={dummy}></div>
-      </div>
-
-      <div className="form-container">
-        <input
-          type="file"
-          id="image-file"
-          className="image-file"
-          ref={imageFileRef}
-          onChange={onFileChange}
-        />
-        <form onSubmit={sendMessage} onKeyDown={onKeyPress}>
-          <button className="form-button" onClick={handleImageAttach}>
-            <MdAttachFile className="icon" />
-          </button>
-          {selectedFile && (
-            <div className="image-preview-container">
-              {imageData && (
-                <div className="image-preview">
-                  <img src={imageData} alt={selectedFile.name} />
-                  <button onClick={cancelImage}>
-                    <TiDeleteOutline />
-                  </button>
-                </div>
-              )}
-              <p>
-                {selectedFile.name.length > 12 && <>...</>}
-                {selectedFile.name.substring(selectedFile.name.length - 12)}
-              </p>
             </div>
           )}
-          <TextareaAutosize
-            value={formValue}
-            onChange={handleTextArea}
-            placeholder="Write a message..."
-            maxRows={3}
-          />
-          {loading ? (
-            <div class="loader"></div>
-          ) : (
-            <button type="submit" className="form-button">
-              <AiOutlineSend className="icon" />
-            </button>
-          )}
-        </form>
-      </div>
-    </div>
+          <div className="messages-container">
+            <div className="room-title-container">
+              <div className="room-title">{chatGuest.name}</div>
+            </div>
+            {messages &&
+              messages
+                .map((msg) => (
+                  <ChatMessage
+                    key={msg.id}
+                    message={msg}
+                    guestName={chatGuest.name}
+                    photoURL={
+                      msg && msg.uid === user.id
+                        ? chatGuest.avatar
+                        : user.avatar
+                    }
+                    messageClass={
+                      msg && msg.uid === user.id ? "sent" : "received"
+                    }
+                  />
+                ))
+                .reverse()}
+            <div ref={dummy}></div>
+          </div>
+
+          <div className="form-container">
+            <input
+              type="file"
+              id="image-file"
+              className="image-file"
+              ref={imageFileRef}
+              onChange={onFileChange}
+            />
+            <form onSubmit={sendMessage} onKeyDown={onKeyPress}>
+              <button className="form-button" onClick={handleImageAttach}>
+                <MdAttachFile className="icon" />
+              </button>
+              {selectedFile && (
+                <div className="image-preview-container">
+                  {imageData && (
+                    <div className="image-preview">
+                      <img src={imageData} alt={selectedFile.name} />
+                      <button onClick={cancelImage}>
+                        <TiDeleteOutline />
+                      </button>
+                    </div>
+                  )}
+                  <p>
+                    {selectedFile.name.length > 12 && <>...</>}
+                    {selectedFile.name.substring(selectedFile.name.length - 12)}
+                  </p>
+                </div>
+              )}
+              <TextareaAutosize
+                value={formValue}
+                onChange={handleTextArea}
+                placeholder="Write a message..."
+                maxRows={3}
+              />
+              {loading ? (
+                <div>
+                  <div className="loader"></div>
+                </div>
+              ) : (
+                <button type="submit" className="form-button">
+                  <AiOutlineSend className="icon" />
+                </button>
+              )}
+            </form>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
