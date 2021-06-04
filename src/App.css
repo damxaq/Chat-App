@@ -326,6 +326,23 @@ textarea {
   font-size: 1.3rem;
 }
 
+.profile-photo {
+  padding: 1rem;
+}
+
+.main-photo-placeholder {
+  padding: 1rem;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  margin: auto;
+  line-height: 2rem;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: "bold";
+  background-color: rebeccapurple;
+}
+
 .profile-photo img {
   width: 6rem;
   height: 6rem;
@@ -333,6 +350,9 @@ textarea {
 
 .search-form-container {
   padding: 1rem;
+  margin: auto;
+  width: 80%;
+  min-width: 220px;
 }
 
 .search-form {
@@ -340,7 +360,8 @@ textarea {
 }
 
 .search-form input[type="text"] {
-  width: 200px;
+  max-width: 200px;
+  width: 80%;
   height: 35px;
   padding-right: 50px;
   font-size: 1rem;
@@ -364,10 +385,16 @@ textarea {
   padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
+  overflow: auto;
+  max-height: 40vh;
+  max-width: 400px;
+  min-width: 250px;
+  margin: auto;
 }
 
 .contacts-container .contact {
-  min-width: 350px;
+  width: 100%;
+  max-width: 350px;
   height: 5rem;
   margin: auto;
   margin-top: 1rem;

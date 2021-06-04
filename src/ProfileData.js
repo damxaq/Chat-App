@@ -9,6 +9,7 @@ import { MdDelete } from "react-icons/md";
 import { MdAddCircleOutline } from "react-icons/md";
 import { TiTickOutline } from "react-icons/ti";
 
+import firebase from "firebase/app";
 import "firebase/firestore";
 
 const ProfileData = (props) => {
@@ -46,7 +47,7 @@ const ProfileData = (props) => {
   };
 
   useEffect(() => {
-    if (profileData) {
+    if (profileData && profileData.length) {
       setContacts(profileData[0].contacts);
     } else {
       setContacts([]);
@@ -54,7 +55,16 @@ const ProfileData = (props) => {
   }, [profileData]);
 
   const createRoom = async (roomId) => {
-    await rooms.doc(roomId).collection("messages").doc().set({});
+    await rooms
+      .doc(roomId)
+      .collection("messages")
+      .doc()
+      .set({
+        text: `${profileData[0].name} has joined the chat!`,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid: profileData[0].id,
+        isPhoto: false,
+      });
   };
 
   const searchByEmail = (e) => {
@@ -114,18 +124,23 @@ const ProfileData = (props) => {
           ) : (
             <div className="profile-data-container">
               <div className="profile-photo">
-                <img
-                  src={profileData[0].avatar}
-                  alt={profileData[0].name}
-                  style={{ borderRadius: "50%" }}
-                />
+                {profileData[0].avatar ? (
+                  <img
+                    src={profileData[0].avatar}
+                    alt={profileData[0].name}
+                    style={{ borderRadius: "50%" }}
+                  />
+                ) : (
+                  <div className="main-photo-placeholder">
+                    {profileData[0].name.slice(0, 1).toUpperCase()}
+                  </div>
+                )}
               </div>
-              <div>{profileData[0].email}</div>
               <div>{profileData[0].name}</div>
+              <div>{profileData[0].email}</div>
               {props.isContactModalOpen && (
-                <div>
+                <>
                   <div>
-                    <h3>Your contacts:</h3>
                     <div className="contacts-container">
                       {contacts &&
                         contacts.map((contact) => (
@@ -168,58 +183,56 @@ const ProfileData = (props) => {
                     </div>
                   </div>
                   <div>
-                    <div>
-                      <div className="search-form-container">
-                        <form className="search-form" onSubmit={searchByEmail}>
-                          <input type="text" placeholder="Search" />
-                          <input type="submit" value="🔍" />
-                        </form>
-                      </div>
-                      {searchedUser && (
-                        <div className="contacts-container search-result-container">
-                          <div className="contact-container">
-                            <div className="contact">
-                              <button className="cart" onClick={() => {}}>
-                                <div className="contact-image-container">
-                                  {searchedUser.avatar ? (
-                                    <img
-                                      src={searchedUser.avatar}
-                                      alt={searchedUser.name}
-                                    />
-                                  ) : (
-                                    <div className="avatar-placeholder">
-                                      {searchedUser.name
-                                        .slice(0, 1)
-                                        .toUpperCase()}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="contact-text">
-                                  <p>{searchedUser.name}</p>
-                                  <p>{searchedUser.email}</p>
-                                </div>
-                              </button>
-                              <div className="add-button-container">
-                                {profileData[0].contacts.find(
-                                  (contact) =>
-                                    contact.email === searchedUser.email
-                                ) ? (
-                                  <div className="contact-exist">
-                                    <TiTickOutline />
-                                  </div>
+                    <div className="search-form-container">
+                      <form className="search-form" onSubmit={searchByEmail}>
+                        <input type="text" placeholder="Search" />
+                        <input type="submit" value="🔍" />
+                      </form>
+                    </div>
+                    {searchedUser && (
+                      <div className="contacts-container search-result-container">
+                        <div className="contact-container">
+                          <div className="contact">
+                            <button className="cart" onClick={() => {}}>
+                              <div className="contact-image-container">
+                                {searchedUser.avatar ? (
+                                  <img
+                                    src={searchedUser.avatar}
+                                    alt={searchedUser.name}
+                                  />
                                 ) : (
-                                  <button onClick={() => addUserToContacts()}>
-                                    <MdAddCircleOutline className="add-button" />
-                                  </button>
+                                  <div className="avatar-placeholder">
+                                    {searchedUser.name
+                                      .slice(0, 1)
+                                      .toUpperCase()}
+                                  </div>
                                 )}
                               </div>
+                              <div className="contact-text">
+                                <p>{searchedUser.name}</p>
+                                <p>{searchedUser.email}</p>
+                              </div>
+                            </button>
+                            <div className="add-button-container">
+                              {profileData[0].contacts.find(
+                                (contact) =>
+                                  contact.email === searchedUser.email
+                              ) ? (
+                                <div className="contact-exist">
+                                  <TiTickOutline />
+                                </div>
+                              ) : (
+                                <button onClick={() => addUserToContacts()}>
+                                  <MdAddCircleOutline className="add-button" />
+                                </button>
+                              )}
                             </div>
                           </div>
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
-                </div>
+                </>
               )}
               {props.isSettingModalOpen && (
                 <Settings

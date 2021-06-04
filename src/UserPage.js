@@ -1,5 +1,4 @@
 // TODO add waiting to make sure user is created in database before showing profiledata
-// when adding contact, empty message is created in room
 
 import React, { useState, useEffect } from "react";
 

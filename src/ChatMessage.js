@@ -15,9 +15,10 @@ const ChatMessage = (props) => {
     if (prevMsgTime > 0 && createdAt > 0) {
       const difference = Math.round(createdAt - prevMsgTime);
       if (difference > MIN_TIME_DIFFERENCE) {
-        console.log(Math.round(createdAt - prevMsgTime));
         setshowMsgTime(true);
       }
+    } else if (createdAt > 0 && !prevMsgTime) {
+      setshowMsgTime(true);
     }
   }, [prevMsgTime, createdAt]);
 
