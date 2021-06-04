@@ -3,12 +3,10 @@
 // too much prop drilling! use Context, Luke
 // add preview of most recent message
 // add scroll to contacts and side contacts
-// add asking if really want to delete contact
 // add periodical contacts update
 // maybe new collection with all accounts and date of last modification
 // profileData is wiped out when there is problem with loading site
 // responsivenes
-// add timestamp to uploaded avatars
 
 import "./App.css";
 

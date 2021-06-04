@@ -54,11 +54,14 @@ const Settings = (props) => {
   }, [selectedFile, setfileCorrect]);
 
   const uploadAvatar = (file) => {
+    const timestamp = Math.round(new Date().getTime() / 1000).toString();
+    const newFile = timestamp + file.name;
+
     var metadata = {
       contentType: "image/jpeg",
     };
     var uploadTask = storageRef
-      .child("images/" + file.name)
+      .child("profile_photos/" + newFile)
       .put(file, metadata);
     uploadTask.on(
       firebase.storage.TaskEvent.STATE_CHANGED,

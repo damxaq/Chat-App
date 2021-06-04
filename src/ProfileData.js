@@ -89,6 +89,16 @@ const ProfileData = (props) => {
     });
   };
 
+  const handleRemoveContact = (contact) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete ${contact.name} from your contacts?`
+      )
+    ) {
+      removeContact(contact.id);
+    }
+  };
+
   return (
     <>
       {profileData && profileData.length && (
@@ -147,7 +157,7 @@ const ProfileData = (props) => {
                               </button>
                               <div className="delete-button-container">
                                 <button
-                                  onClick={() => removeContact(contact.id)}
+                                  onClick={() => handleRemoveContact(contact)}
                                 >
                                   <MdDelete className="delete-button" />
                                 </button>
