@@ -59,6 +59,7 @@ body {
 .room-title-container {
   font-size: 0.6rem;
   position: fixed;
+  transform: translateY(-2rem);
   left: 0;
   right: 0;
   color: white;
@@ -110,6 +111,7 @@ textarea {
   overflow-y: scroll;
   height: 65vh;
   padding-bottom: 3rem;
+  padding-top: 2rem;
   min-width: 21rem;
 }
 
@@ -736,6 +738,11 @@ textarea {
   width: 1.5rem;
   height: 1.5rem;
   animation: spin 1s linear infinite;
+}
+
+.chat-msg-time {
+  color: white;
+  font-size: 0.7rem;
 }
 
 @keyframes spin {

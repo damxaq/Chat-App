@@ -47,13 +47,11 @@ const ChatRoom = (props) => {
       uploadImage(selectedFile);
     }
 
-    const { id, photoURL } = user;
-
     if (formValue) {
       await messagesRef.add({
         text: formValue,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        uid: id,
+        uid: user.id,
         isPhoto: false,
       });
 
@@ -157,7 +155,9 @@ const ChatRoom = (props) => {
   };
 
   useEffect(() => {
-    dummy.current.scrollIntoView({ behavior: "smooth" });
+    if (dummy && dummy.current) {
+      dummy.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
 
   return (
@@ -192,11 +192,14 @@ const ChatRoom = (props) => {
             </div>
             {messages &&
               messages
-                .map((msg) => (
+                .map((msg, index) => (
                   <ChatMessage
                     key={msg.id}
                     message={msg}
                     guestName={chatGuest.name}
+                    prevMsgTime={
+                      messages[index + 1] ? messages[index + 1].createdAt : null
+                    }
                     photoURL={
                       msg && msg.uid === user.id
                         ? chatGuest.avatar

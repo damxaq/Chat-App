@@ -1,14 +1,29 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 const ChatMessage = (props) => {
-  const { text, isPhoto } = props.message;
+  const { text, isPhoto, createdAt } = props.message;
   const photoURL = props.photoURL;
   const messageClass = props.messageClass;
+  const prevMsgTime = props.prevMsgTime;
   const modalRef = useRef();
   const guestName = props.guestName;
+  const msgDate = createdAt ? createdAt.toDate().toLocaleString() : null;
+  const [showMsgTime, setshowMsgTime] = useState(false);
+  const MIN_TIME_DIFFERENCE = 300;
+
+  useEffect(() => {
+    if (prevMsgTime > 0 && createdAt > 0) {
+      const difference = Math.round(createdAt - prevMsgTime);
+      if (difference > MIN_TIME_DIFFERENCE) {
+        console.log(Math.round(createdAt - prevMsgTime));
+        setshowMsgTime(true);
+      }
+    }
+  }, [prevMsgTime, createdAt]);
 
   return (
     <>
+      <div className="chat-msg-time">{showMsgTime && msgDate}</div>
       <div className={`message ${messageClass}`}>
         {messageClass === "received" && (
           <div className="profile-img">
