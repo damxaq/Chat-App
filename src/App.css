@@ -4,18 +4,18 @@ body {
   background: linear-gradient(to right, #24243e, #1a1646, #0f0c29);
 
   overflow: hidden;
+  height: 100vh;
 }
 
 .App {
+  height: 100vh;
   text-align: center;
+  overflow: hidden;
 }
 
 .App header {
   border-bottom: 1px solid rgba(104, 53, 155, 0.5);
   background-color: #201f1f;
-  /* background: #000000;
-  background: -webkit-linear-gradient(to right, #434343, #000000);
-  background: linear-gradient(to right, #434343, #000000); */
   color: white;
   height: 5vh;
   min-height: 50px;
@@ -23,7 +23,6 @@ body {
   top: 0;
   display: flex;
   align-items: center;
-  /* justify-content: center; */
   padding: 1rem;
 }
 
@@ -31,7 +30,6 @@ body {
   font-size: 2rem;
   margin: auto;
   cursor: default;
-  /* border: 1px solid red; */
 }
 
 .logo .logo-icon {
@@ -49,6 +47,7 @@ body {
   margin: auto;
   margin-left: 5rem;
   margin-right: 5rem;
+  height: 90vh;
 }
 
 .chat-room {
@@ -110,6 +109,7 @@ textarea {
   flex-direction: column;
   overflow-y: scroll;
   height: 65vh;
+  max-height: 100%;
   padding-bottom: 3rem;
   padding-top: 2rem;
   min-width: 21rem;
@@ -470,6 +470,19 @@ textarea {
   font-size: 2rem;
   color: silver;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.hamburger-container button:hover {
+  transform: rotate(90deg);
+}
+
+.hamburger-container button.active {
+  transform: rotate(90deg);
+}
+
+.hamburger-container button.active:hover {
+  transform: rotate(0deg);
 }
 
 .side-contacts {
@@ -768,7 +781,7 @@ textarea {
 }
 
 .chat-msg-time {
-  color: white;
+  color: silver;
   font-size: 0.7rem;
 }
 
@@ -822,5 +835,60 @@ input:-webkit-autofill:active {
   .App section {
     margin-left: 1rem;
     margin-right: 1rem;
+    height: 85vh;
+  }
+
+  .logo {
+    font-size: 1.3rem;
+    padding-left: 1rem;
+  }
+
+  .chat-room {
+    height: 100%;
+  }
+
+  .messages-container {
+    height: 100%;
+    min-width: 18rem;
+    font-size: 0.8rem;
+  }
+
+  .message p {
+    margin: 0.8rem 0;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .logo {
+    display: none;
+  }
+
+  .App section {
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+    height: 80vh;
+  }
+
+  .messages-container {
+    min-width: 18rem;
+    font-size: 0.7rem;
+  }
+
+  .message .thumb-img {
+    width: 13rem;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .messages-container {
+    min-width: 15rem;
+  }
+
+  .form-container {
+    min-width: 17rem;
+  }
+
+  .message .thumb-img {
+    width: 11rem;
   }
 }

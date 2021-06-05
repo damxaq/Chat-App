@@ -172,6 +172,7 @@ const ChatRoom = (props) => {
         >
           <div className="hamburger-container">
             <button
+              className={sideContactsVisible ? "active" : ""}
               onClick={() => setSideContactsVisible(!sideContactsVisible)}
             >
               <GiHamburgerMenu />

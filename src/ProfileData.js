@@ -112,7 +112,7 @@ const ProfileData = (props) => {
   return (
     <>
       {profileData && profileData.length && (
-        <div>
+        <>
           {props.chatRoomId ? (
             <ChatRoom
               firestore={firestore}
@@ -243,7 +243,7 @@ const ProfileData = (props) => {
               )}
             </div>
           )}
-        </div>
+        </>
       )}
     </>
   );
