@@ -856,6 +856,14 @@ input:-webkit-autofill:active {
   .message p {
     margin: 0.8rem 0;
   }
+
+  .side-contacts {
+    display: none;
+  }
+
+  .chat-room {
+    margin-left: 0 !important;
+  }
 }
 
 @media only screen and (max-width: 350px) {
