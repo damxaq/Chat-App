@@ -17,13 +17,14 @@ const ChatRoom = (props) => {
   const firestore = props.firestore;
   const user = props.user;
   const roomId = props.roomId;
-  const dummy = useRef();
+  const bottomChatRef = useRef();
   const imageFileRef = useRef();
   const messagesRef = firestore
     .collection("rooms")
     .doc(roomId)
     .collection("messages");
-  const query = messagesRef.orderBy("createdAt", "desc").limit(20);
+  const [msgLimit, setMsgLimit] = useState(20);
+  const query = messagesRef.orderBy("createdAt", "desc").limit(msgLimit);
   const [messages] = useCollectionData(query, { idField: "id" });
   const storageRef = firebase.storage().ref();
   const chatGuest = user.contacts.filter(
@@ -35,6 +36,7 @@ const ChatRoom = (props) => {
   const [imageData, setImageData] = useState(null);
   const [formValue, setFormValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [scrollToBottom, setScrollToBottom] = useState(true);
 
   const ALLOWED_SIZE = 10000000;
 
@@ -56,6 +58,7 @@ const ChatRoom = (props) => {
       });
 
       setFormValue("");
+      if (!scrollToBottom) setScrollToBottom(true);
     }
   };
 
@@ -149,14 +152,23 @@ const ChatRoom = (props) => {
     imageFileRef.current.click();
   };
 
+  const handleLoadMore = () => {
+    if (scrollToBottom) {
+      setScrollToBottom(false);
+    }
+    if (messages && messages.length % 20 === 0) {
+      setMsgLimit(msgLimit + 20);
+    }
+  };
+
   const cancelImage = () => {
     setSelectedFile(null);
     setImageData(null);
   };
 
   useEffect(() => {
-    if (dummy && dummy.current) {
-      dummy.current.scrollIntoView({ behavior: "smooth" });
+    if (bottomChatRef && bottomChatRef.current && scrollToBottom) {
+      bottomChatRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
@@ -191,6 +203,14 @@ const ChatRoom = (props) => {
             <div className="room-title-container">
               <div className="room-title">{chatGuest.name}</div>
             </div>
+            <div ref={bottomChatRef}></div>
+            {messages && messages.length % 20 === 0 ? (
+              <div className="show-more" onClick={() => handleLoadMore()}>
+                Show More
+              </div>
+            ) : (
+              <></>
+            )}
             {messages &&
               messages
                 .map((msg, index) => (
@@ -212,7 +232,7 @@ const ChatRoom = (props) => {
                   />
                 ))
                 .reverse()}
-            <div ref={dummy}></div>
+            <div ref={bottomChatRef}></div>
           </div>
 
           <div className="form-container">
