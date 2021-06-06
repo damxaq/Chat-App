@@ -156,7 +156,7 @@ const ChatRoom = (props) => {
     if (scrollToBottom) {
       setScrollToBottom(false);
     }
-    if (messages && messages.length % 20 === 0) {
+    if (messages && messages.length === msgLimit) {
       setMsgLimit(msgLimit + 20);
     }
   };
