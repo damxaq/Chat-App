@@ -94,6 +94,8 @@ const ChatRoom = (props) => {
           case firebase.storage.TaskState.RUNNING:
             console.log("Upload is running");
             break;
+          default:
+            break;
         }
       },
       (error) => {
@@ -107,6 +109,8 @@ const ChatRoom = (props) => {
             break;
           case "storage/unknown":
             console.log("storage/unknown");
+            break;
+          default:
             break;
         }
       },
@@ -204,7 +208,7 @@ const ChatRoom = (props) => {
               <div className="room-title">{chatGuest.name}</div>
             </div>
             <div ref={bottomChatRef}></div>
-            {messages && messages.length % 20 === 0 ? (
+            {messages && messages.length > 0 && messages.length % 20 === 0 ? (
               <div className="show-more" onClick={() => handleLoadMore()}>
                 Show More
               </div>

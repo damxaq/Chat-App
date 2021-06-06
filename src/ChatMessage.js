@@ -37,10 +37,7 @@ const ChatMessage = (props) => {
             )}
           </div>
         )}
-        <div
-          className="message-content"
-          className={`message-content ${messageClass}`}
-        >
+        <div className={`message-content ${messageClass}`}>
           {isPhoto ? (
             <>
               <img

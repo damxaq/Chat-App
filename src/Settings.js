@@ -5,7 +5,6 @@ import "firebase/firestore";
 import "firebase/storage";
 
 const Settings = (props) => {
-  const firestore = props.firestore;
   const profileData = props.profileData;
   const profileRef = props.profileRef;
 
@@ -75,6 +74,8 @@ const Settings = (props) => {
           case firebase.storage.TaskState.RUNNING:
             console.log("Upload is running");
             break;
+          default:
+            break;
         }
       },
       (error) => {
@@ -87,6 +88,8 @@ const Settings = (props) => {
             break;
           case "storage/unknown":
             console.log("storage/unknown");
+            break;
+          default:
             break;
         }
       },
