@@ -122,6 +122,7 @@ const ChatRoom = (props) => {
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             uid: user.id,
             isPhoto: true,
+            photoTitle: newFile,
           });
           setLoading(false);
         });

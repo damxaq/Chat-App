@@ -54,6 +54,7 @@ const ProfileData = (props) => {
     }
   }, [profileData]);
 
+  // TODO: dont create room if it exist
   const createRoom = async (roomId) => {
     await rooms
       .doc(roomId)

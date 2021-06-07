@@ -39,6 +39,12 @@ const config = {
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
+  firebase
+    .firestore()
+    .enablePersistence()
+    .catch((err) => {
+      console.log("failed persistence", err);
+    });
 } else {
   firebase.app();
 }
