@@ -6,11 +6,9 @@ const ChatMessage = (props) => {
   const messageClass = props.messageClass;
   const prevMsgTime = props.prevMsgTime;
   const modalRef = useRef();
-  const imgRef = useRef();
   const guestName = props.guestName;
   const msgDate = createdAt ? createdAt.toDate().toLocaleString() : null;
   const [showMsgTime, setshowMsgTime] = useState(false);
-  const [image, setImage] = useState(null);
   const MIN_TIME_DIFFERENCE = 300;
 
   useEffect(() => {
@@ -25,20 +23,21 @@ const ChatMessage = (props) => {
   }, [prevMsgTime, createdAt]);
 
   const Image = ({ url, title }) => {
-    if (url && title) {
+    if (url && title !== undefined) {
       const image = window.localStorage.getItem(title);
-      if (image) {
-        let base64ToString = Buffer.from(image, "base64").toString();
-        console.log("image exist in storage");
+      if (image && image !== "FAIL") {
         return (
           <img
+            src={"data:image/jpeg;" + image}
             className="thumb-img"
-            src={"data:image/jpeg;base64," + base64ToString}
+            alt={text}
+            onClick={() => {
+              modalRef.current.style.display = "block";
+            }}
           />
         );
       } else {
-        console.log("creating image in local storage");
-        createBase64(url, title);
+        if (!image) createBase64(url, title);
         return (
           <img
             className="thumb-img"
@@ -47,7 +46,6 @@ const ChatMessage = (props) => {
             onClick={() => {
               modalRef.current.style.display = "block";
             }}
-            ref={imgRef}
           />
         );
       }
@@ -55,6 +53,7 @@ const ChatMessage = (props) => {
   };
 
   const createBase64 = (path, title) => {
+    console.log("creating image in local storage");
     let image = document.createElement("img");
     document.body.appendChild(image);
     image.setAttribute("style", "display:none");
@@ -68,8 +67,13 @@ const ChatMessage = (props) => {
       imgCanvas.width = image.width;
       imgCanvas.height = image.height;
       imgContext.drawImage(image, 0, 0, image.width, image.height);
-      let imgInfom = imgCanvas.toDataURL("image/png");
-      localStorage.setItem(title, imgInfom);
+      const imgInfo = imgCanvas.toDataURL("image/png");
+      try {
+        localStorage.setItem(title, imgInfo);
+      } catch (error) {
+        console.log(error);
+        localStorage.setItem(title, "FAIL");
+      }
       document.body.removeChild(image);
     };
   };

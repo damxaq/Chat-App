@@ -1,4 +1,3 @@
-// add offline caching
 // add encrypting
 // too much prop drilling! use Context, Luke
 // add preview of most recent message
