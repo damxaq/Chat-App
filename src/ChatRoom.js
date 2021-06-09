@@ -3,12 +3,9 @@ import { useGlobalContext } from "./App";
 
 import ChatMessage from "./ChatMessage";
 import SideContacts from "./SideContacts";
-import { AiOutlineSend } from "react-icons/ai";
-import { MdAttachFile } from "react-icons/md";
+import ChatRoomForm from "./ChatRoomForm";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { TiDeleteOutline } from "react-icons/ti";
 
-import TextareaAutosize from "react-textarea-autosize";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import firebase from "firebase/app";
@@ -32,16 +29,11 @@ const ChatRoom = ({ user, contacts }) => {
 
   const [sideContactsVisible, setSideContactsVisible] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [imageData, setImageData] = useState(null);
-  const [formValue, setFormValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [scrollToBottom, setScrollToBottom] = useState(true);
+  const [imageData, setImageData] = useState(null);
 
-  const ALLOWED_SIZE = 10000000;
-
-  const sendMessage = async (e) => {
-    e.preventDefault();
-
+  const sendMessage = async (formValue) => {
     if (selectedFile) {
       setLoading(true);
       console.log(selectedFile);
@@ -55,21 +47,8 @@ const ChatRoom = ({ user, contacts }) => {
         uid: user.id,
         isPhoto: false,
       });
-
-      setFormValue("");
     }
     if (!scrollToBottom) setScrollToBottom(true);
-  };
-
-  const handleTextArea = (e) => {
-    setFormValue(e.target.value);
-  };
-
-  const onKeyPress = (e) => {
-    if (e.keyCode === 13 && e.shiftKey === false) {
-      e.preventDefault();
-      sendMessage(e);
-    }
   };
 
   const uploadImage = async (file) => {
@@ -127,33 +106,6 @@ const ChatRoom = ({ user, contacts }) => {
         });
       }
     );
-  };
-
-  const readURL = (file) => {
-    return new Promise((res, rej) => {
-      const reader = new FileReader();
-      reader.onload = (e) => res(e.target.result);
-      reader.onerror = (e) => rej(e);
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const onFileChange = async (event) => {
-    console.log("event", event);
-    const file = event.target.files[0];
-    if (file && file.type === "image/jpeg" && file.size < ALLOWED_SIZE) {
-      setSelectedFile(file);
-      const url = await readURL(file);
-      setImageData(url);
-    } else {
-      console.log("wrong file!");
-    }
-  };
-
-  const handleImageAttach = (e) => {
-    e.preventDefault();
-    console.log(imageFileRef);
-    imageFileRef.current.click();
   };
 
   const handleLoadMore = () => {
@@ -238,52 +190,16 @@ const ChatRoom = ({ user, contacts }) => {
                 .reverse()}
             <div ref={bottomChatRef}></div>
           </div>
-
-          <div className="form-container">
-            <input
-              type="file"
-              id="image-file"
-              className="image-file"
-              ref={imageFileRef}
-              onChange={onFileChange}
-            />
-            <form onSubmit={sendMessage} onKeyDown={onKeyPress}>
-              <button className="form-button" onClick={handleImageAttach}>
-                <MdAttachFile className="icon" />
-              </button>
-              {selectedFile && (
-                <div className="image-preview-container">
-                  {imageData && (
-                    <div className="image-preview">
-                      <img src={imageData} alt={selectedFile.name} />
-                      <button onClick={cancelImage}>
-                        <TiDeleteOutline />
-                      </button>
-                    </div>
-                  )}
-                  <p>
-                    {selectedFile.name.length > 12 && <>...</>}
-                    {selectedFile.name.substring(selectedFile.name.length - 12)}
-                  </p>
-                </div>
-              )}
-              <TextareaAutosize
-                value={formValue}
-                onChange={handleTextArea}
-                placeholder="Write a message..."
-                maxRows={3}
-              />
-              {loading ? (
-                <div>
-                  <div className="loader"></div>
-                </div>
-              ) : (
-                <button type="submit" className="form-button">
-                  <AiOutlineSend className="icon" />
-                </button>
-              )}
-            </form>
-          </div>
+          <ChatRoomForm
+            sendMessage={sendMessage}
+            loading={loading}
+            selectedFile={selectedFile}
+            setSelectedFile={setSelectedFile}
+            imageData={imageData}
+            setImageData={setImageData}
+            imageFileRef={imageFileRef}
+            cancelImage={cancelImage}
+          />
         </div>
       )}
     </>
