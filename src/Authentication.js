@@ -33,7 +33,7 @@ const Authentication = () => {
       ) : (
         <div>
           <button
-            className={isSignInModalOpen ? "active" : ""}
+            className={isSignInModalOpen ? "active signin" : "signin"}
             onClick={() => {
               setIsRegisterModalOpen(false);
               setIsSignInModalOpen(true);

@@ -81,8 +81,6 @@ const ChatMessage = ({
     };
   };
 
-  console.log("msg RERERERENDER");
-
   return (
     <>
       <div className="chat-msg-time">{showMsgTime && msgDate}</div>

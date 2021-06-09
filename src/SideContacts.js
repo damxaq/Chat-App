@@ -2,7 +2,8 @@ import React from "react";
 import { useGlobalContext } from "./App";
 
 const SideContacts = ({ contacts }) => {
-  const { setChatRoomId, roomId } = useGlobalContext();
+  const { setChatRoomId, chatRoomId } = useGlobalContext();
+
   return (
     <>
       <p>Contacts:</p>
@@ -12,7 +13,7 @@ const SideContacts = ({ contacts }) => {
             <div className="side-contact-container" key={contact.id}>
               <div
                 className={
-                  roomId === contact.roomId
+                  chatRoomId === contact.roomId
                     ? "side-contact active"
                     : "side-contact"
                 }

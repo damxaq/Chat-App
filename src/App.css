@@ -888,6 +888,15 @@ input:-webkit-autofill:active {
   .chat-room {
     margin-left: 0 !important;
   }
+
+  .signup-buttons-container button {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .signup-buttons-container button.signin {
+    position: fixed;
+    left: 10px;
+  }
 }
 
 @media only screen and (max-width: 350px) {
