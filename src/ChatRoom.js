@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useGlobalContext } from "./App";
 
 import ChatMessage from "./ChatMessage";
 import SideContacts from "./SideContacts";
@@ -13,22 +14,20 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
-const ChatRoom = (props) => {
-  const firestore = props.firestore;
-  const user = props.user;
-  const roomId = props.roomId;
+const ChatRoom = ({ user, contacts }) => {
+  const { firestore, chatRoomId } = useGlobalContext();
   const bottomChatRef = useRef();
   const imageFileRef = useRef();
   const messagesRef = firestore
     .collection("rooms")
-    .doc(roomId)
+    .doc(chatRoomId)
     .collection("messages");
   const [msgLimit, setMsgLimit] = useState(20);
   const query = messagesRef.orderBy("createdAt", "desc").limit(msgLimit);
   const [messages] = useCollectionData(query, { idField: "id" });
   const storageRef = firebase.storage().ref();
   const chatGuest = user.contacts.filter(
-    (contact) => contact.roomId === roomId
+    (contact) => contact.roomId === chatRoomId
   )[0];
 
   const [sideContactsVisible, setSideContactsVisible] = useState(false);
@@ -58,8 +57,8 @@ const ChatRoom = (props) => {
       });
 
       setFormValue("");
-      if (!scrollToBottom) setScrollToBottom(true);
     }
+    if (!scrollToBottom) setScrollToBottom(true);
   };
 
   const handleTextArea = (e) => {
@@ -177,6 +176,10 @@ const ChatRoom = (props) => {
     }
   }, [messages]);
 
+  useEffect(() => {
+    if (!scrollToBottom) setScrollToBottom(true);
+  }, [chatRoomId]);
+
   return (
     <>
       {chatGuest && (
@@ -197,11 +200,7 @@ const ChatRoom = (props) => {
           </div>
           {sideContactsVisible && (
             <div className="side-contacts">
-              <SideContacts
-                contacts={props.contacts}
-                setChatRoomId={props.setChatRoomId}
-                roomId={roomId}
-              />
+              <SideContacts contacts={contacts} />
             </div>
           )}
           <div className="messages-container">

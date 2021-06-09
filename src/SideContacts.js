@@ -1,16 +1,18 @@
 import React from "react";
+import { useGlobalContext } from "./App";
 
-const SideContacts = (props) => {
+const SideContacts = ({ contacts }) => {
+  const { setChatRoomId, roomId } = useGlobalContext();
   return (
     <>
       <p>Contacts:</p>
       <div className="side-contacts-container">
-        {props.contacts &&
-          props.contacts.map((contact) => (
+        {contacts &&
+          contacts.map((contact) => (
             <div className="side-contact-container" key={contact.id}>
               <div
                 className={
-                  props.roomId === contact.roomId
+                  roomId === contact.roomId
                     ? "side-contact active"
                     : "side-contact"
                 }
@@ -18,7 +20,7 @@ const SideContacts = (props) => {
                 <button
                   className="side-cart"
                   onClick={() => {
-                    props.setChatRoomId(contact.roomId);
+                    setChatRoomId(contact.roomId);
                   }}
                 >
                   <div className="side-contact-text">

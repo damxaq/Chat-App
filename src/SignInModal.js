@@ -1,9 +1,7 @@
 import React from "react";
 import firebase from "firebase/app";
 
-const SignInModal = (props) => {
-  const auth = props.auth;
-
+const SignInModal = ({ auth }) => {
   const signIn = (e) => {
     e.preventDefault();
 

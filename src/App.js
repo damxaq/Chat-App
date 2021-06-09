@@ -1,5 +1,4 @@
 // add encrypting
-// too much prop drilling! use Context, Luke
 // add preview of most recent message
 // add periodical contacts update
 // maybe new collection with all accounts and date of last modification
@@ -14,7 +13,7 @@ import SignInModal from "./SignInModal";
 import VerificationModal from "./VerificationModal";
 import UserPage from "./UserPage";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { AiFillMessage } from "react-icons/ai";
 
@@ -51,6 +50,8 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
+const AppContext = React.createContext();
+
 function App() {
   const [user] = useAuthState(auth);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
@@ -59,8 +60,6 @@ function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [userVerified, setUserVerified] = useState(false);
   const [chatRoomId, setChatRoomId] = useState(null);
-
-  console.log(user);
 
   const verificationTimestamp = window.localStorage.getItem(
     "verificationTimestamp"
@@ -118,55 +117,48 @@ function App() {
   }, [user, setIsRegisterModalOpen]);
 
   return (
-    <div className="App">
-      <header>
-        {user && userVerified && (
-          <Navigation
-            user={user}
-            auth={auth}
-            setIsSettingModalOpen={setIsSettingModalOpen}
-            setIsContactModalOpen={setIsContactModalOpen}
-            isSettingModalOpen={isSettingModalOpen}
-            isContactModalOpen={isContactModalOpen}
-            chatRoomId={chatRoomId}
-            setChatRoomId={setChatRoomId}
-          />
-        )}
+    <AppContext.Provider
+      value={{
+        isRegisterModalOpen,
+        setIsRegisterModalOpen,
+        isSignInModalOpen,
+        setIsSignInModalOpen,
+        isSettingModalOpen,
+        setIsSettingModalOpen,
+        isContactModalOpen,
+        setIsContactModalOpen,
+        user,
+        auth,
+        userVerified,
+        setUserVerified,
+        chatRoomId,
+        setChatRoomId,
+        firestore,
+      }}
+    >
+      <div className="App">
+        <header>
+          {user && userVerified && <Navigation />}
 
-        <h3 className="logo">
-          <AiFillMessage className="logo-icon" />
-          <i>MyChat</i>
-        </h3>
-        <Authentication
-          user={user}
-          auth={auth}
-          setIsRegisterModalOpen={setIsRegisterModalOpen}
-          setIsSignInModalOpen={setIsSignInModalOpen}
-          setUserVerified={setUserVerified}
-          isRegisterModalOpen={isRegisterModalOpen}
-          isSignInModalOpen={isSignInModalOpen}
-        />
-      </header>
-      <section>
-        {isSignInModalOpen && <SignInModal auth={auth} user={user} />}
-        {isRegisterModalOpen && <RegisterModal />}
-        {user && !user.emailVerified && <VerificationModal />}
-        {user && userVerified && (
-          <UserPage
-            firestore={firestore}
-            auth={auth}
-            user={user}
-            isSettingModalOpen={isSettingModalOpen}
-            isContactModalOpen={isContactModalOpen}
-            setIsSettingModalOpen={setIsSettingModalOpen}
-            setIsContactModalOpen={setIsContactModalOpen}
-            chatRoomId={chatRoomId}
-            setChatRoomId={setChatRoomId}
-          />
-        )}
-      </section>
-    </div>
+          <h3 className="logo">
+            <AiFillMessage className="logo-icon" />
+            <i>MyChat</i>
+          </h3>
+          <Authentication />
+        </header>
+        <section>
+          {isSignInModalOpen && <SignInModal auth={auth} user={user} />}
+          {isRegisterModalOpen && <RegisterModal />}
+          {user && !user.emailVerified && <VerificationModal />}
+          {user && userVerified && <UserPage />}
+        </section>
+      </div>
+    </AppContext.Provider>
   );
 }
 
-export default App;
+export const useGlobalContext = () => {
+  return useContext(AppContext);
+};
+
+export { AppContext, App };

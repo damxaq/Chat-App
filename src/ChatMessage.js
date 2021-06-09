@@ -1,12 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 
-const ChatMessage = (props) => {
-  const { text, isPhoto, createdAt, photoTitle } = props.message;
-  const photoURL = props.photoURL;
-  const messageClass = props.messageClass;
-  const prevMsgTime = props.prevMsgTime;
+const ChatMessage = ({
+  message,
+  photoURL,
+  messageClass,
+  prevMsgTime,
+  guestName,
+}) => {
+  const { text, isPhoto, createdAt, photoTitle } = message;
   const modalRef = useRef();
-  const guestName = props.guestName;
   const msgDate = createdAt ? createdAt.toDate().toLocaleString() : null;
   const [showMsgTime, setshowMsgTime] = useState(false);
   const MIN_TIME_DIFFERENCE = 300;
@@ -50,6 +52,7 @@ const ChatMessage = (props) => {
         );
       }
     }
+    return <></>;
   };
 
   const createBase64 = (path, title) => {

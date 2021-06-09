@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { useGlobalContext } from "./App";
+
 import ChatRoom from "./ChatRoom";
 import Settings from "./Settings";
 
@@ -12,12 +14,21 @@ import { TiTickOutline } from "react-icons/ti";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
-const ProfileData = (props) => {
-  const firestore = props.firestore;
+const ProfileData = () => {
+  const {
+    firestore,
+    user,
+    isSettingModalOpen,
+    isContactModalOpen,
+    setIsContactModalOpen,
+    chatRoomId,
+    setChatRoomId,
+  } = useGlobalContext();
+
   const accountsRef = firestore.collection("accounts");
-  const query = accountsRef.where("__name__", "==", props.user.uid);
+  const query = accountsRef.where("__name__", "==", user.uid);
   const [profileData] = useCollectionData(query, { idField: "id" });
-  const profileRef = firestore.collection("accounts").doc(props.user.uid);
+  const profileRef = firestore.collection("accounts").doc(user.uid);
   const rooms = firestore.collection("rooms");
   const [contacts, setContacts] = useState([]);
 
@@ -114,13 +125,11 @@ const ProfileData = (props) => {
     <>
       {profileData && profileData.length && (
         <>
-          {props.chatRoomId ? (
+          {chatRoomId ? (
             <ChatRoom
-              firestore={firestore}
               user={profileData[0]}
-              roomId={props.chatRoomId}
               contacts={contacts}
-              setChatRoomId={props.setChatRoomId}
+              setChatRoomId={setChatRoomId}
             />
           ) : (
             <div className="profile-data-container">
@@ -139,7 +148,7 @@ const ProfileData = (props) => {
               </div>
               <div>{profileData[0].name}</div>
               <div>{profileData[0].email}</div>
-              {props.isContactModalOpen && (
+              {isContactModalOpen && (
                 <>
                   <div>
                     <div className="contacts-container">
@@ -150,8 +159,8 @@ const ProfileData = (props) => {
                               <button
                                 className="cart"
                                 onClick={() => {
-                                  props.setChatRoomId(contact.roomId);
-                                  props.setIsContactModalOpen(false);
+                                  setChatRoomId(contact.roomId);
+                                  setIsContactModalOpen(false);
                                 }}
                               >
                                 <div className="contact-image-container">
@@ -235,7 +244,7 @@ const ProfileData = (props) => {
                   </div>
                 </>
               )}
-              {props.isSettingModalOpen && (
+              {isSettingModalOpen && (
                 <Settings
                   firestore={firestore}
                   profileData={profileData[0]}

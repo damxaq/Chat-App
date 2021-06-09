@@ -2,15 +2,25 @@
 
 import React, { useState, useEffect } from "react";
 
+import { useGlobalContext } from "./App";
+
 import ProfileData from "./ProfileData";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import "firebase/firestore";
 
-const UserPage = (props) => {
-  const firestore = props.firestore;
-  const user = props.user;
+const UserPage = () => {
+  const {
+    firestore,
+    user,
+    isSettingModalOpen,
+    isContactModalOpen,
+    setIsSettingModalOpen,
+    setIsContactModalOpen,
+    chatRoomId,
+    setChatRoomId,
+  } = useGlobalContext();
 
   const [accountReady, setAccountReady] = useState(false);
 
@@ -45,7 +55,7 @@ const UserPage = (props) => {
         if (querySnapshot.docs && querySnapshot.docs.length) {
           console.log("email exist");
           setAccountReady(true);
-          props.setIsContactModalOpen(true);
+          setIsContactModalOpen(true);
         } else {
           console.log("creating account");
           createAccount({
@@ -71,12 +81,12 @@ const UserPage = (props) => {
         <ProfileData
           firestore={firestore}
           user={user}
-          isSettingModalOpen={props.isSettingModalOpen}
-          isContactModalOpen={props.isContactModalOpen}
-          setIsSettingModalOpen={props.setIsSettingModalOpen}
-          setIsContactModalOpen={props.setIsContactModalOpen}
-          chatRoomId={props.chatRoomId}
-          setChatRoomId={props.setChatRoomId}
+          isSettingModalOpen={isSettingModalOpen}
+          isContactModalOpen={isContactModalOpen}
+          setIsSettingModalOpen={setIsSettingModalOpen}
+          setIsContactModalOpen={setIsContactModalOpen}
+          chatRoomId={chatRoomId}
+          setChatRoomId={setChatRoomId}
         />
       )}
     </>

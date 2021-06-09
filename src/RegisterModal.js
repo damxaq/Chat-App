@@ -1,7 +1,7 @@
 import React from "react";
 import firebase from "firebase/app";
 
-const RegisterModal = (props) => {
+const RegisterModal = () => {
   const registerAccount = (e) => {
     e.preventDefault();
     const email = e.target[0].value;

@@ -1,10 +1,18 @@
 import React from "react";
+import { useGlobalContext } from "./App";
 
 import { FiLogOut } from "react-icons/fi";
 
-const Authentication = (props) => {
-  const user = props.user;
-  const auth = props.auth;
+const Authentication = () => {
+  const {
+    user,
+    auth,
+    setIsRegisterModalOpen,
+    setIsSignInModalOpen,
+    setUserVerified,
+    isRegisterModalOpen,
+    isSignInModalOpen,
+  } = useGlobalContext();
 
   return (
     <div className="signup-buttons-container">
@@ -13,7 +21,7 @@ const Authentication = (props) => {
           <button
             onClick={() => {
               auth.signOut();
-              props.setIsSignInModalOpen(true);
+              setIsSignInModalOpen(true);
             }}
           >
             <div className="nav-button-holder">
@@ -25,20 +33,20 @@ const Authentication = (props) => {
       ) : (
         <div>
           <button
-            className={props.isSignInModalOpen ? "active" : ""}
+            className={isSignInModalOpen ? "active" : ""}
             onClick={() => {
-              props.setIsRegisterModalOpen(false);
-              props.setIsSignInModalOpen(true);
+              setIsRegisterModalOpen(false);
+              setIsSignInModalOpen(true);
             }}
           >
             Sign In
           </button>
           <button
-            className={props.isRegisterModalOpen ? "active" : ""}
+            className={isRegisterModalOpen ? "active" : ""}
             onClick={() => {
-              props.setIsSignInModalOpen(false);
-              props.setIsRegisterModalOpen(true);
-              props.setUserVerified(false);
+              setIsSignInModalOpen(false);
+              setIsRegisterModalOpen(true);
+              setUserVerified(false);
             }}
           >
             Sign Up

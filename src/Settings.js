@@ -4,10 +4,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-const Settings = (props) => {
-  const profileData = props.profileData;
-  const profileRef = props.profileRef;
-
+const Settings = ({ profileData, profileRef }) => {
   const ALLOWED_SIZE = 500000;
   const storageRef = firebase.storage().ref();
 
