@@ -1,9 +1,9 @@
 // add encrypting
-// add preview of most recent message
 // add periodical contacts update
 // maybe new collection with all accounts and date of last modification
 // profileData is wiped out when there is problem with loading site
-// dont rerender with typing every letter
+// comments
+// add info in chatroom, if picture is wrong, and add png
 
 import "./App.css";
 
@@ -36,6 +36,7 @@ const config = {
   databaseUrl: "https://chat-app-627c6-default-rtdb.firebaseio.com/",
 };
 
+// Initialazing firebase connection
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
   firebase

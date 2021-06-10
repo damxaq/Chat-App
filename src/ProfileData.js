@@ -4,6 +4,7 @@ import { useGlobalContext } from "./App";
 
 import ChatRoom from "./ChatRoom";
 import Settings from "./Settings";
+import LastMsgInfo from "./LastMsgInfo";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -126,20 +127,12 @@ const ProfileData = () => {
       {profileData && profileData.length && (
         <>
           {chatRoomId ? (
-            <ChatRoom
-              user={profileData[0]}
-              contacts={contacts}
-              setChatRoomId={setChatRoomId}
-            />
+            <ChatRoom user={profileData[0]} contacts={contacts} />
           ) : (
             <div className="profile-data-container">
               <div className="profile-photo">
                 {profileData[0].avatar ? (
-                  <img
-                    src={profileData[0].avatar}
-                    alt={profileData[0].name}
-                    style={{ borderRadius: "50%" }}
-                  />
+                  <img src={profileData[0].avatar} alt={profileData[0].name} />
                 ) : (
                   <div className="main-photo-placeholder">
                     {profileData[0].name.slice(0, 1).toUpperCase()}
@@ -153,7 +146,7 @@ const ProfileData = () => {
                   <div>
                     <div className="contacts-container">
                       {contacts &&
-                        contacts.map((contact) => (
+                        contacts.map((contact, index) => (
                           <div className="contact-container" key={contact.id}>
                             <div className="contact">
                               <button
@@ -177,7 +170,7 @@ const ProfileData = () => {
                                 </div>
                                 <div className="contact-text">
                                   <p>{contact.name}</p>
-                                  <p>{contact.email}</p>
+                                  <LastMsgInfo roomId={contact.roomId} />
                                 </div>
                               </button>
                               <div className="delete-button-container">

@@ -330,6 +330,10 @@ textarea {
   padding: 1rem;
 }
 
+.profile-photo img {
+  border-radius: 50%;
+}
+
 .main-photo-placeholder {
   padding: 1rem;
   border-radius: 50%;
