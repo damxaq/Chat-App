@@ -56,14 +56,17 @@ const ChatRoom = ({ user, contacts }) => {
     const timestamp = Math.round(new Date().getTime() / 1000).toString();
     const newFile = timestamp + file.name;
 
-    var metadata = {
-      contentType: "image/jpeg",
+    const metadata = {
+      contentType: file.type,
     };
-    var uploadTask = storageRef.child("images/" + newFile).put(file, metadata);
+    const uploadTask = storageRef
+      .child("images/" + newFile)
+      .put(file, metadata);
     uploadTask.on(
       firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) => {
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED:

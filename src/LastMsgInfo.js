@@ -47,8 +47,6 @@ const LastMsgInfo = ({ roomId }) => {
     return msg.substring(0, 15).concat(msg.length > 15 ? "..." : "");
   };
 
-  console.log("RERENDER");
-
   return (
     <>
       {msgInfo && (

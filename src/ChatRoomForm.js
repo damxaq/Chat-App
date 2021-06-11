@@ -16,6 +16,7 @@ const ChatRoomForm = ({
   cancelImage,
 }) => {
   const [formValue, setFormValue] = useState("");
+  const [correctFile, setCorrectFile] = useState(true);
 
   const ALLOWED_SIZE = 10000000;
   const handleTextArea = (e) => {
@@ -45,20 +46,25 @@ const ChatRoomForm = ({
   };
 
   const onFileChange = async (event) => {
-    console.log("event", event);
+    if (correctFile === false) setCorrectFile(true);
     const file = event.target.files[0];
-    if (file && file.type === "image/jpeg" && file.size < ALLOWED_SIZE) {
+    if (
+      file &&
+      (file.type === "image/jpeg" || file.type === "image/png") &&
+      file.size < ALLOWED_SIZE
+    ) {
       setSelectedFile(file);
       const url = await readURL(file);
       setImageData(url);
     } else {
-      console.log("wrong file!");
+      cancelImage();
+      setCorrectFile(false);
     }
+    imageFileRef.current.value = "";
   };
 
   const handleImageAttach = (e) => {
     e.preventDefault();
-    console.log(imageFileRef);
     imageFileRef.current.click();
   };
 
@@ -89,6 +95,17 @@ const ChatRoomForm = ({
               {selectedFile.name.length > 12 && <>...</>}
               {selectedFile.name.substring(selectedFile.name.length - 12)}
             </p>
+          </div>
+        )}
+        {correctFile === false && (
+          <div
+            className="wrong-file"
+            onClick={() => {
+              cancelImage();
+              setCorrectFile(true);
+            }}
+          >
+            <p>Wrong file or size too large</p>
           </div>
         )}
         <TextareaAutosize
