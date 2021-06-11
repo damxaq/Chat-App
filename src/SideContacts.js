@@ -1,6 +1,8 @@
 import React from "react";
 import { useGlobalContext } from "./App";
 
+import LastMsgInfo from "./LastMsgInfo";
+
 const SideContacts = ({ contacts }) => {
   const { setChatRoomId, chatRoomId } = useGlobalContext();
 
@@ -37,7 +39,7 @@ const SideContacts = ({ contacts }) => {
                       </div>
                       <p>{contact.name}</p>
                     </div>
-                    <p>{contact.email}</p>
+                    <LastMsgInfo roomId={contact.roomId} />
                   </div>
                 </button>
               </div>

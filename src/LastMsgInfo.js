@@ -14,7 +14,7 @@ const LastMsgInfo = ({ roomId }) => {
 
   const [msgInfo, setMsgInfo] = useState(null);
 
-  useEffect(() => {
+  const getLastMsgData = () => {
     messageRef
       .orderBy("createdAt", "desc")
       .limit(1)
@@ -32,17 +32,32 @@ const LastMsgInfo = ({ roomId }) => {
       .catch((error) => {
         console.log("Error getting documents: ", error);
       });
+  };
+
+  useEffect(() => {
+    getLastMsgData();
+    const messageInterval = setInterval(() => {
+      getLastMsgData();
+    }, 60000);
+
+    return () => clearInterval(messageInterval);
   }, []);
 
   const shortenMsg = (msg) => {
     return msg.substring(0, 15).concat(msg.length > 15 ? "..." : "");
   };
 
+  console.log("RERENDER");
+
   return (
     <>
       {msgInfo && (
         <>
-          {msgInfo.isPhoto ? <p>[Image]</p> : <p>{shortenMsg(msgInfo.text)}</p>}
+          {msgInfo.isPhoto ? (
+            <p>[Image]</p>
+          ) : (
+            <i style={{ color: "silver" }}>{shortenMsg(msgInfo.text)}</i>
+          )}
         </>
       )}
     </>

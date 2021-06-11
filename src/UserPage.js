@@ -30,15 +30,6 @@ const UserPage = () => {
 
   console.log(accountIds);
 
-  //   let ids = [];
-  //   if (accountIds && accountIds.length) {
-  //     ids = accountIds.map((account) => {
-  //       return account.id;
-  //     });
-  //   }
-
-  //   console.log(ids);
-
   const createAccount = async (account) => {
     await accountIdsRef.doc(user.uid).set({
       email: account.email,

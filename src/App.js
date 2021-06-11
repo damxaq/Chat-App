@@ -4,6 +4,7 @@
 // profileData is wiped out when there is problem with loading site
 // comments
 // add info in chatroom, if picture is wrong, and add png
+// add invites
 
 import "./App.css";
 
