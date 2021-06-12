@@ -32,6 +32,7 @@ const ProfileData = () => {
   const profileRef = firestore.collection("accounts").doc(user.uid);
   const rooms = firestore.collection("rooms");
   const [contacts, setContacts] = useState([]);
+  const [userNotFound, setUserNotFound] = useState("");
 
   const [searchedUser, setSearchedUser] = useState(undefined);
 
@@ -47,6 +48,8 @@ const ProfileData = () => {
       const user2 = searchedUser.id;
       const roomId = user1 > user2 ? user2 + user1 : user1 + user2;
 
+      sendInvite(searchedUser.id, searchedUser.email);
+
       setSearchedUser(undefined);
       const newContact = { ...searchedUser };
       newContact.roomId = roomId;
@@ -56,6 +59,14 @@ const ProfileData = () => {
         contacts: [...profileData[0].contacts, newContact],
       });
     }
+  };
+
+  const sendInvite = (userId, email) => {
+    var docRef = firestore.collection("accounts").doc(userId);
+
+    docRef.update({
+      invites: firebase.firestore.FieldValue.arrayUnion(email),
+    });
   };
 
   useEffect(() => {
@@ -82,12 +93,17 @@ const ProfileData = () => {
 
   const searchByEmail = (e) => {
     e.preventDefault();
+
+    if (searchedUser) {
+      setSearchedUser(undefined);
+    }
     const searchTerm = e.target[0].value;
     e.target[0].value = "";
     const query = accountsRef.where("email", "==", searchTerm);
     query
       .get()
       .then((querySnapshot) => {
+        let userFound = false;
         querySnapshot.forEach((doc) => {
           console.log(doc.id, " => ", doc.data());
           setSearchedUser({
@@ -96,7 +112,14 @@ const ProfileData = () => {
             name: doc.data().name,
             id: doc.data().id,
           });
+          if (userNotFound) {
+            setUserNotFound("");
+          }
+          userFound = true;
         });
+        if (!userFound) {
+          setUserNotFound(searchTerm);
+        }
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
@@ -124,7 +147,7 @@ const ProfileData = () => {
 
   return (
     <>
-      {profileData && profileData.length && (
+      {profileData && profileData.length > 0 && (
         <>
           {chatRoomId ? (
             <ChatRoom user={profileData[0]} contacts={contacts} />
@@ -146,7 +169,7 @@ const ProfileData = () => {
                   <div>
                     <div className="contacts-container">
                       {contacts &&
-                        contacts.map((contact, index) => (
+                        contacts.map((contact) => (
                           <div className="contact-container" key={contact.id}>
                             <div className="contact">
                               <button
@@ -192,6 +215,13 @@ const ProfileData = () => {
                         <input type="submit" value="🔍" />
                       </form>
                     </div>
+                    {userNotFound && (
+                      <div>
+                        <p>
+                          Could not find user: <i>{userNotFound}</i>
+                        </p>
+                      </div>
+                    )}
                     {searchedUser && (
                       <div className="contacts-container search-result-container">
                         <div className="contact-container">

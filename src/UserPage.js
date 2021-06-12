@@ -57,6 +57,7 @@ const UserPage = () => {
               ? user.displayName
               : user.email.split("@")[0],
             contacts: [],
+            invites: [],
           });
           setAccountReady(true);
         }
@@ -66,22 +67,7 @@ const UserPage = () => {
       });
   }, [user, setAccountReady]);
 
-  return (
-    <>
-      {accountReady && (
-        <ProfileData
-          firestore={firestore}
-          user={user}
-          isSettingModalOpen={isSettingModalOpen}
-          isContactModalOpen={isContactModalOpen}
-          setIsSettingModalOpen={setIsSettingModalOpen}
-          setIsContactModalOpen={setIsContactModalOpen}
-          chatRoomId={chatRoomId}
-          setChatRoomId={setChatRoomId}
-        />
-      )}
-    </>
-  );
+  return <>{accountReady && <ProfileData />}</>;
 };
 
 export default UserPage;
