@@ -9,9 +9,11 @@ import { TiTickOutline } from "react-icons/ti";
 const Contact = ({
   contact,
   removeContact,
-  search,
+  search = false,
   addUserToContacts,
   profileData,
+  invite = false,
+  removeInvite,
 }) => {
   const { setIsContactModalOpen, setChatRoomId } = useGlobalContext();
 
@@ -58,16 +60,29 @@ const Contact = ({
           </button>
           {search ? (
             <div className="add-button-container">
-              {profileData[0].contacts.find(
-                (profileContact) => profileContact.email === contact.email
-              ) ? (
-                <div className="contact-exist">
-                  <TiTickOutline />
-                </div>
-              ) : (
-                <button onClick={() => addUserToContacts()}>
+              {invite ? (
+                <button
+                  onClick={() => {
+                    addUserToContacts(contact);
+                    removeInvite(contact.email);
+                  }}
+                >
                   <MdAddCircleOutline className="add-button" />
                 </button>
+              ) : (
+                <>
+                  {profileData[0].contacts.find(
+                    (profileContact) => profileContact.email === contact.email
+                  ) ? (
+                    <div className="contact-exist">
+                      <TiTickOutline />
+                    </div>
+                  ) : (
+                    <button onClick={() => addUserToContacts(contact)}>
+                      <MdAddCircleOutline className="add-button" />
+                    </button>
+                  )}
+                </>
               )}
             </div>
           ) : (

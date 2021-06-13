@@ -6,29 +6,15 @@ import { useGlobalContext } from "./App";
 
 import ProfileData from "./ProfileData";
 
-import { useCollectionData } from "react-firebase-hooks/firestore";
-
 import "firebase/firestore";
 
 const UserPage = () => {
-  const {
-    firestore,
-    user,
-    isSettingModalOpen,
-    isContactModalOpen,
-    setIsSettingModalOpen,
-    setIsContactModalOpen,
-    chatRoomId,
-    setChatRoomId,
-  } = useGlobalContext();
+  const { firestore, user, setIsContactModalOpen } = useGlobalContext();
 
   const [accountReady, setAccountReady] = useState(false);
 
   const accountIdsRef = firestore.collection("accountIds");
-  const [accountIds] = useCollectionData(accountIdsRef, { idField: "id" });
   const accountsRef = firestore.collection("accounts");
-
-  console.log(accountIds);
 
   const createAccount = async (account) => {
     await accountIdsRef.doc(user.uid).set({

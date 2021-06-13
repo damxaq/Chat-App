@@ -5,6 +5,7 @@ import { useGlobalContext } from "./App";
 import ChatRoom from "./ChatRoom";
 import Settings from "./Settings";
 import Contact from "./Contact";
+import Invite from "./Invite";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -27,25 +28,25 @@ const ProfileData = () => {
   const rooms = firestore.collection("rooms");
   const [contacts, setContacts] = useState([]);
   const [userNotFound, setUserNotFound] = useState("");
-
   const [searchedUser, setSearchedUser] = useState(undefined);
+  const [invites, setInvites] = useState([]);
 
   console.log("profileData", profileData);
 
-  const addUserToContacts = async () => {
+  const addUserToContacts = async (contactToAdd) => {
     if (
       !profileData[0].contacts.find(
-        (contact) => contact.email === searchedUser.email
+        (contact) => contact.email === contactToAdd.email
       )
     ) {
       const user1 = profileData[0].id;
-      const user2 = searchedUser.id;
+      const user2 = contactToAdd.id;
       const roomId = user1 > user2 ? user2 + user1 : user1 + user2;
 
-      sendInvite(searchedUser.id, searchedUser.email);
+      sendInvite(contactToAdd.id, profileData[0].email);
 
       setSearchedUser(undefined);
-      const newContact = { ...searchedUser };
+      const newContact = { ...contactToAdd };
       newContact.roomId = roomId;
 
       createRoom(roomId);
@@ -63,11 +64,31 @@ const ProfileData = () => {
     });
   };
 
+  const removeInvite = (email) => {
+    if (profileData[0]) {
+      var docRef = firestore.collection("accounts").doc(profileData[0].id);
+
+      docRef.update({
+        invites: firebase.firestore.FieldValue.arrayRemove(email),
+      });
+    }
+  };
+
   useEffect(() => {
     if (profileData && profileData.length) {
       setContacts(profileData[0].contacts);
+      let invitesArray = [];
+      profileData[0].invites.forEach((invite) => {
+        if (
+          !profileData[0].contacts.find((contact) => contact.email === invite)
+        )
+          invitesArray.push(invite);
+      });
+
+      setInvites(invitesArray);
     } else {
       setContacts([]);
+      setInvites([]);
     }
   }, [profileData]);
 
@@ -148,6 +169,7 @@ const ProfileData = () => {
               </div>
               <div>{profileData[0].name}</div>
               <div>{profileData[0].email}</div>
+
               {isContactModalOpen && (
                 <>
                   <div>
@@ -163,6 +185,22 @@ const ProfileData = () => {
                           />
                         ))}
                     </div>
+
+                    {invites && invites.length > 0 && (
+                      <div className="contacts-container">
+                        Invitations:
+                        {invites.map((email) => (
+                          <Invite
+                            key={email}
+                            email={email}
+                            accountsRef={accountsRef}
+                            addUserToContacts={addUserToContacts}
+                            removeInvite={removeInvite}
+                            contacts={contacts}
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <div className="search-form-container">
