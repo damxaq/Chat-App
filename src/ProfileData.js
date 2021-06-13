@@ -4,13 +4,9 @@ import { useGlobalContext } from "./App";
 
 import ChatRoom from "./ChatRoom";
 import Settings from "./Settings";
-import LastMsgInfo from "./LastMsgInfo";
+import Contact from "./Contact";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
-
-import { MdDelete } from "react-icons/md";
-import { MdAddCircleOutline } from "react-icons/md";
-import { TiTickOutline } from "react-icons/ti";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -21,9 +17,7 @@ const ProfileData = () => {
     user,
     isSettingModalOpen,
     isContactModalOpen,
-    setIsContactModalOpen,
     chatRoomId,
-    setChatRoomId,
   } = useGlobalContext();
 
   const accountsRef = firestore.collection("accounts");
@@ -135,16 +129,6 @@ const ProfileData = () => {
     });
   };
 
-  const handleRemoveContact = (contact) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete ${contact.name} from your contacts?`
-      )
-    ) {
-      removeContact(contact.id);
-    }
-  };
-
   return (
     <>
       {profileData && profileData.length > 0 && (
@@ -170,41 +154,13 @@ const ProfileData = () => {
                     <div className="contacts-container">
                       {contacts &&
                         contacts.map((contact) => (
-                          <div className="contact-container" key={contact.id}>
-                            <div className="contact">
-                              <button
-                                className="cart"
-                                onClick={() => {
-                                  setChatRoomId(contact.roomId);
-                                  setIsContactModalOpen(false);
-                                }}
-                              >
-                                <div className="contact-image-container">
-                                  {contact.avatar ? (
-                                    <img
-                                      src={contact.avatar}
-                                      alt={contact.name}
-                                    />
-                                  ) : (
-                                    <div className="avatar-placeholder">
-                                      {contact.name.slice(0, 1).toUpperCase()}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="contact-text">
-                                  <p>{contact.name}</p>
-                                  <LastMsgInfo roomId={contact.roomId} />
-                                </div>
-                              </button>
-                              <div className="delete-button-container">
-                                <button
-                                  onClick={() => handleRemoveContact(contact)}
-                                >
-                                  <MdDelete className="delete-button" />
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+                          <Contact
+                            key={contact.id}
+                            contact={contact}
+                            removeContact={removeContact}
+                            search={false}
+                            addUserToContacts={addUserToContacts}
+                          />
                         ))}
                     </div>
                   </div>
@@ -224,44 +180,13 @@ const ProfileData = () => {
                     )}
                     {searchedUser && (
                       <div className="contacts-container search-result-container">
-                        <div className="contact-container">
-                          <div className="contact">
-                            <button className="cart" onClick={() => {}}>
-                              <div className="contact-image-container">
-                                {searchedUser.avatar ? (
-                                  <img
-                                    src={searchedUser.avatar}
-                                    alt={searchedUser.name}
-                                  />
-                                ) : (
-                                  <div className="avatar-placeholder">
-                                    {searchedUser.name
-                                      .slice(0, 1)
-                                      .toUpperCase()}
-                                  </div>
-                                )}
-                              </div>
-                              <div className="contact-text">
-                                <p>{searchedUser.name}</p>
-                                <p>{searchedUser.email}</p>
-                              </div>
-                            </button>
-                            <div className="add-button-container">
-                              {profileData[0].contacts.find(
-                                (contact) =>
-                                  contact.email === searchedUser.email
-                              ) ? (
-                                <div className="contact-exist">
-                                  <TiTickOutline />
-                                </div>
-                              ) : (
-                                <button onClick={() => addUserToContacts()}>
-                                  <MdAddCircleOutline className="add-button" />
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        </div>
+                        <Contact
+                          contact={searchedUser}
+                          removeContact={removeContact}
+                          search={true}
+                          addUserToContacts={addUserToContacts}
+                          profileData={profileData}
+                        />
                       </div>
                     )}
                   </div>
