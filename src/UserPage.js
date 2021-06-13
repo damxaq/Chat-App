@@ -44,8 +44,10 @@ const UserPage = () => {
               : user.email.split("@")[0],
             contacts: [],
             invites: [],
+            rooms: [],
           });
           setAccountReady(true);
+          setIsContactModalOpen(true);
         }
       })
       .catch((error) => {

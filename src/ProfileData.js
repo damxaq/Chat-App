@@ -33,15 +33,17 @@ const ProfileData = () => {
 
   console.log("profileData", profileData);
 
+  const generateRoomId = (user1, user2) => {
+    return user1 > user2 ? user2 + user1 : user1 + user2;
+  };
+
   const addUserToContacts = async (contactToAdd) => {
     if (
       !profileData[0].contacts.find(
         (contact) => contact.email === contactToAdd.email
       )
     ) {
-      const user1 = profileData[0].id;
-      const user2 = contactToAdd.id;
-      const roomId = user1 > user2 ? user2 + user1 : user1 + user2;
+      const roomId = generateRoomId(profileData[0].id, contactToAdd.id);
 
       sendInvite(contactToAdd.id, profileData[0].email);
 
@@ -52,16 +54,19 @@ const ProfileData = () => {
       createRoom(roomId);
       await profileRef.update({
         contacts: [...profileData[0].contacts, newContact],
+        rooms: firebase.firestore.FieldValue.arrayUnion(roomId),
       });
     }
   };
 
   const sendInvite = (userId, email) => {
-    var docRef = firestore.collection("accounts").doc(userId);
+    if (email !== profileData[0].email) {
+      var docRef = firestore.collection("accounts").doc(userId);
 
-    docRef.update({
-      invites: firebase.firestore.FieldValue.arrayUnion(email),
-    });
+      docRef.update({
+        invites: firebase.firestore.FieldValue.arrayUnion(email),
+      });
+    }
   };
 
   const removeInvite = (email) => {
@@ -92,18 +97,19 @@ const ProfileData = () => {
     }
   }, [profileData]);
 
-  // TODO: dont create room if it exist
   const createRoom = async (roomId) => {
-    await rooms
-      .doc(roomId)
-      .collection("messages")
-      .doc()
-      .set({
-        text: `${profileData[0].name} has joined the chat!`,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        uid: profileData[0].id,
-        isPhoto: false,
-      });
+    if (!profileData[0].rooms.includes(roomId)) {
+      await rooms
+        .doc(roomId)
+        .collection("messages")
+        .doc()
+        .set({
+          text: `${profileData[0].name} has joined the chat!`,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          uid: profileData[0].id,
+          isPhoto: false,
+        });
+    }
   };
 
   const searchByEmail = (e) => {
@@ -120,7 +126,6 @@ const ProfileData = () => {
       .then((querySnapshot) => {
         let userFound = false;
         querySnapshot.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
           setSearchedUser({
             email: doc.data().email,
             avatar: doc.data().avatar,
