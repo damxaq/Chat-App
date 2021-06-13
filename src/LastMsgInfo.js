@@ -47,6 +47,14 @@ const LastMsgInfo = ({ roomId }) => {
     return msg.substring(0, 15).concat(msg.length > 15 ? "..." : "");
   };
 
+  const minutesPassed = (time) => {
+    console.log(time.toDate());
+    time = time.toDate();
+    const now = new Date();
+    const diff = Math.round((now - time) / (1000 * 60));
+    return diff < 1 ? "now" : `${diff} min`;
+  };
+
   return (
     <>
       {msgInfo && (
@@ -54,7 +62,10 @@ const LastMsgInfo = ({ roomId }) => {
           {msgInfo.isPhoto ? (
             <p>[Image]</p>
           ) : (
-            <i style={{ color: "silver" }}>{shortenMsg(msgInfo.text)}</i>
+            <div className="last-msg">
+              <i style={{ color: "silver" }}>{shortenMsg(msgInfo.text)}</i>
+              <span>{minutesPassed(msgInfo.createdAt)}</span>
+            </div>
           )}
         </>
       )}

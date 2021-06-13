@@ -817,6 +817,18 @@ textarea {
   font-size: 0.8rem;
 }
 
+.last-msg {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.last-msg span {
+  font-size: 0.8rem;
+  align-self: center;
+  margin-left: 1rem;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -935,7 +947,7 @@ input:-webkit-autofill:active {
   }
 }
 
-@media only screen and (max-width: 300px) {
+@media only screen and (max-width: 310px) {
   .messages-container {
     min-width: 15rem;
   }
@@ -946,5 +958,9 @@ input:-webkit-autofill:active {
 
   .message .thumb-img {
     width: 11rem;
+  }
+
+  .contact-image-container {
+    display: none;
   }
 }

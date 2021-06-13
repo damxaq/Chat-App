@@ -3,7 +3,6 @@
 // maybe new collection with all accounts and date of last modification
 // profileData is wiped out when there is problem with loading site
 // comments
-// add time from last message
 
 import "./App.css";
 
