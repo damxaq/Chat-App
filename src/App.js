@@ -1,6 +1,4 @@
 // add encrypting
-// add periodical contacts update
-// maybe new collection with all accounts and date of last modification
 // profileData is wiped out when there is problem with loading site
 // comments
 

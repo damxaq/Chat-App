@@ -48,11 +48,16 @@ const LastMsgInfo = ({ roomId }) => {
   };
 
   const minutesPassed = (time) => {
-    console.log(time.toDate());
     time = time.toDate();
     const now = new Date();
     const diff = Math.round((now - time) / (1000 * 60));
-    return diff < 1 ? "now" : `${diff} min`;
+    return diff < 1
+      ? "now"
+      : diff < 120
+      ? `${diff} min`
+      : diff < 60 * 48
+      ? `${Math.round(diff / 60)} h`
+      : `${Math.round(diff / (60 * 24))} d`;
   };
 
   return (

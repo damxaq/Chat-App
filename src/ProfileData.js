@@ -91,6 +91,8 @@ const ProfileData = () => {
       });
 
       setInvites(invitesArray);
+
+      refreshContacts();
     } else {
       setContacts([]);
       setInvites([]);
@@ -146,6 +148,41 @@ const ProfileData = () => {
       });
   };
 
+  const refreshContacts = () => {
+    if (profileData && profileData[0].contacts.length > 0) {
+      profileData[0].contacts.forEach((contact) => {
+        const docRef = firestore.collection("accounts").doc(contact.id);
+        docRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              const userName = doc.data().name;
+              const userAvatar = doc.data().avatar;
+              if (userName !== contact.name || userAvatar !== contact.avatar) {
+                console.log("Updating contacts");
+                let updatedContacts = profileData[0].contacts.filter(
+                  (element) => element.id !== contact.id
+                );
+                updatedContacts.push({
+                  avatar: userAvatar,
+                  name: userName,
+                  email: contact.email,
+                  id: contact.id,
+                  roomId: contact.roomId,
+                });
+                profileRef.update({
+                  contacts: updatedContacts,
+                });
+              }
+            }
+          })
+          .catch((error) => {
+            console.log("Error getting document:", error);
+          });
+      });
+    }
+  };
+
   const removeContact = async (id) => {
     const filteredContacts = profileData[0].contacts.filter(
       (contact) => contact.id !== id
@@ -154,6 +191,14 @@ const ProfileData = () => {
       contacts: filteredContacts,
     });
   };
+
+  useEffect(() => {
+    const refreshContactsInterval = setInterval(() => {
+      refreshContacts();
+    }, 300000);
+
+    return () => clearInterval(refreshContactsInterval);
+  }, []);
 
   return (
     <>
@@ -210,7 +255,7 @@ const ProfileData = () => {
                   <div>
                     <div className="search-form-container">
                       <form className="search-form" onSubmit={searchByEmail}>
-                        <input type="text" placeholder="Search" />
+                        <input type="text" placeholder="Search by email" />
                         <input type="submit" value="🔍" />
                       </form>
                     </div>
