@@ -21,17 +21,7 @@ import "firebase/auth";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const config = {
-  //TODO move api key to env, and config to separate file
-  apiKey: "AIzaSyCyPX4xnNg9Vo4CZa94bYaz-U38EaxWfIA",
-  authDomain: "chat-app-627c6.firebaseapp.com",
-  projectId: "chat-app-627c6",
-  storageBucket: "chat-app-627c6.appspot.com",
-  messagingSenderId: "757724613437",
-  appId: "1:757724613437:web:da90b14bcfa92476dd5354",
-  measurementId: "G-7QYM9E34V2",
-  databaseUrl: "https://chat-app-627c6-default-rtdb.firebaseio.com/",
-};
+import config from "./firebaseConfig";
 
 // Initialazing firebase connection
 if (!firebase.apps.length) {
