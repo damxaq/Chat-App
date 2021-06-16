@@ -48,7 +48,7 @@ const LastMsgInfo = ({ roomId }) => {
   };
 
   const minutesPassed = (time) => {
-    try {
+    if (time) {
       time = time.toDate();
       const now = new Date();
       const diff = Math.round((now - time) / (1000 * 60));
@@ -59,10 +59,7 @@ const LastMsgInfo = ({ roomId }) => {
         : diff < 60 * 48
         ? `${Math.round(diff / 60)} h`
         : `${Math.round(diff / (60 * 24))} d`;
-    } catch (error) {
-      console.log("minutesPassed error", error);
-      return "";
-    }
+    } else return "";
   };
 
   return (

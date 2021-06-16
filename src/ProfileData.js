@@ -61,7 +61,7 @@ const ProfileData = () => {
   };
 
   const sendInvite = (userId, email) => {
-    if (email !== profileData[0].email) {
+    if (userId !== profileData[0].id) {
       var docRef = firestore.collection("accounts").doc(userId);
 
       docRef.update({
