@@ -11,20 +11,8 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
-const CryptoJS = require("crypto-js");
-
 const ChatRoom = ({ user, contacts }) => {
-  // console.log(process.env.REACT_APP_SECRET_MYCHAT_CRYPTO_KEY);
-  // const data = "test";
-  // const ciphertext = CryptoJS.AES.encrypt(
-  //   JSON.stringify(data),
-  //   "my-secret-key@123"
-  // ).toString();
-
-  // const bytes = CryptoJS.AES.decrypt(ciphertext, "my-secret-key@123");
-  // const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
-  const { firestore, chatRoomId } = useGlobalContext();
+  const { firestore, chatRoomId, encrypt } = useGlobalContext();
   const bottomChatRef = useRef();
   const imageFileRef = useRef();
   const messagesRef = firestore
@@ -54,7 +42,7 @@ const ChatRoom = ({ user, contacts }) => {
 
     if (formValue) {
       await messagesRef.add({
-        text: formValue,
+        text: encrypt(formValue),
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         uid: user.id,
         isPhoto: false,
@@ -111,7 +99,7 @@ const ChatRoom = ({ user, contacts }) => {
         uploadTask.snapshot.ref.getDownloadURL().then(async (downloadURL) => {
           imageFileRef.current.value = "";
           await messagesRef.add({
-            text: downloadURL,
+            text: encrypt(downloadURL),
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             uid: user.id,
             isPhoto: true,

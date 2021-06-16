@@ -1,4 +1,3 @@
-// add encrypting
 // profileData is wiped out when there is problem with loading site
 // comments
 
@@ -22,6 +21,10 @@ import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import config from "./firebaseConfig";
+
+const CryptoJS = require("crypto-js");
+
+const CRYPTO_KEY = process.env.REACT_APP_SECRET_MYCHAT_CRYPTO_KEY;
 
 // Initialazing firebase connection
 if (!firebase.apps.length) {
@@ -53,6 +56,23 @@ function App() {
   const verificationTimestamp = window.localStorage.getItem(
     "verificationTimestamp"
   );
+
+  const encrypt = (text) => {
+    return CryptoJS.AES.encrypt(JSON.stringify(text), CRYPTO_KEY).toString();
+  };
+
+  const decrypt = (text) => {
+    if (text) {
+      try {
+        const bytes = CryptoJS.AES.decrypt(text, CRYPTO_KEY);
+        return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      } catch (error) {
+        console.log("decryption error", error);
+        return text;
+      }
+    }
+    return "";
+  };
 
   const sendVerificationEmail = () => {
     const newTime = Math.floor(new Date().getTime() / 1000.0);
@@ -87,7 +107,6 @@ function App() {
   }, [user]);
 
   useEffect(() => {
-    // TODO this can be moved to register
     if (!user || !user.emailVerified) sendVerificationEmail();
   }, [user]);
 
@@ -123,6 +142,8 @@ function App() {
         chatRoomId,
         setChatRoomId,
         firestore,
+        encrypt,
+        decrypt,
       }}
     >
       <div className="App">

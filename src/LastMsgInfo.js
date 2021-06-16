@@ -5,7 +5,7 @@ import { useGlobalContext } from "./App";
 import "firebase/firestore";
 
 const LastMsgInfo = ({ roomId }) => {
-  const { firestore } = useGlobalContext();
+  const { firestore, decrypt } = useGlobalContext();
 
   const messageRef = firestore
     .collection("rooms")
@@ -22,7 +22,7 @@ const LastMsgInfo = ({ roomId }) => {
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           const msgData = {
-            text: doc.data().text,
+            text: decrypt(doc.data().text),
             isPhoto: doc.data().isPhoto,
             createdAt: doc.data().createdAt,
           };
@@ -48,16 +48,21 @@ const LastMsgInfo = ({ roomId }) => {
   };
 
   const minutesPassed = (time) => {
-    time = time.toDate();
-    const now = new Date();
-    const diff = Math.round((now - time) / (1000 * 60));
-    return diff < 1
-      ? "now"
-      : diff < 120
-      ? `${diff} min`
-      : diff < 60 * 48
-      ? `${Math.round(diff / 60)} h`
-      : `${Math.round(diff / (60 * 24))} d`;
+    try {
+      time = time.toDate();
+      const now = new Date();
+      const diff = Math.round((now - time) / (1000 * 60));
+      return diff < 1
+        ? "now"
+        : diff < 120
+        ? `${diff} min`
+        : diff < 60 * 48
+        ? `${Math.round(diff / 60)} h`
+        : `${Math.round(diff / (60 * 24))} d`;
+    } catch (error) {
+      console.log("minutesPassed error", error);
+      return "";
+    }
   };
 
   return (

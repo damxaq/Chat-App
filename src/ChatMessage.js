@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useGlobalContext } from "./App";
 
 const ChatMessage = ({
   message,
@@ -7,6 +8,7 @@ const ChatMessage = ({
   prevMsgTime,
   guestName,
 }) => {
+  const { decrypt } = useGlobalContext();
   const { text, isPhoto, createdAt, photoTitle } = message;
   const modalRef = useRef();
   const msgDate = createdAt ? createdAt.toDate().toLocaleString() : null;
@@ -24,6 +26,8 @@ const ChatMessage = ({
     }
   }, [prevMsgTime, createdAt]);
 
+  const decryptedText = decrypt(text);
+
   const Image = ({ url, title }) => {
     if (url && title !== undefined) {
       const image = window.localStorage.getItem(title);
@@ -32,7 +36,7 @@ const ChatMessage = ({
           <img
             src={"data:image/jpeg;" + image}
             className="thumb-img"
-            alt={text}
+            alt={decryptedText}
             onClick={() => {
               modalRef.current.style.display = "block";
             }}
@@ -43,8 +47,8 @@ const ChatMessage = ({
         return (
           <img
             className="thumb-img"
-            src={text}
-            alt={text}
+            src={decryptedText}
+            alt={decryptedText}
             onClick={() => {
               modalRef.current.style.display = "block";
             }}
@@ -99,7 +103,7 @@ const ChatMessage = ({
         <div className={`message-content ${messageClass}`}>
           {isPhoto ? (
             <>
-              <Image url={text} title={photoTitle} />
+              <Image url={decryptedText} title={photoTitle} />
               <div className="modal" ref={modalRef}>
                 <span
                   className="close"
@@ -109,11 +113,11 @@ const ChatMessage = ({
                 >
                   X
                 </span>
-                <img className="modal-content" src={text} alt="img" />
+                <img className="modal-content" src={decryptedText} alt="img" />
               </div>
             </>
           ) : (
-            <p>{text}</p>
+            <p>{decryptedText}</p>
           )}
         </div>
         {messageClass === "sent" && (

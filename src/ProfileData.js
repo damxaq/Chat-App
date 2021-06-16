@@ -19,6 +19,7 @@ const ProfileData = () => {
     isSettingModalOpen,
     isContactModalOpen,
     chatRoomId,
+    encrypt,
   } = useGlobalContext();
 
   const accountsRef = firestore.collection("accounts");
@@ -106,7 +107,7 @@ const ProfileData = () => {
         .collection("messages")
         .doc()
         .set({
-          text: `${profileData[0].name} has joined the chat!`,
+          text: encrypt(`${profileData[0].name} has joined the chat!`),
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           uid: profileData[0].id,
           isPhoto: false,
