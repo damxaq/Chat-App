@@ -7,7 +7,7 @@ const SignInModal = ({ auth }) => {
 
     const email = e.target[0].value;
     const password = e.target[1].value;
-
+    // TODO: XDDDDD
     console.log(email, password);
 
     if (email && password) {
