@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import firebase from "firebase/app";
 
 const SignInModal = ({ auth }) => {
+  const [showFormError, setShowFormError] = useState(false);
+
   const signIn = (e) => {
     e.preventDefault();
 
     const email = e.target[0].value;
     const password = e.target[1].value;
-    // TODO: XDDDDD
-    console.log(email, password);
 
     if (email && password) {
       firebase
@@ -21,6 +21,7 @@ const SignInModal = ({ auth }) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode, errorMessage);
+          setShowFormError(true);
         });
     }
   };
@@ -37,7 +38,7 @@ const SignInModal = ({ auth }) => {
           type="text"
           name="email"
           id="email"
-          minLength="5"
+          minLength="4"
           required
           placeholder="Email"
         />
@@ -49,12 +50,13 @@ const SignInModal = ({ auth }) => {
           required
           placeholder="Password"
         />
+        {showFormError && <div>Wrong email or password!</div>}
+
         <button type="submit" className="sign-form-button">
           Sign In
         </button>
       </form>
       <h3>OR</h3>
-      {/* TODO open gugel on same page */}
       <div className="google-btn" onClick={signInWithGoogle}>
         <div className="google-icon-wrapper">
           <img
