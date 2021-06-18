@@ -17,6 +17,7 @@ const VerificationModal = () => {
         onClick={() => {
           window.location.reload();
         }}
+        className="sign-form-button big"
       >
         <i>
           <BiRefresh />

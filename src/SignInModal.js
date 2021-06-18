@@ -49,7 +49,9 @@ const SignInModal = ({ auth }) => {
           required
           placeholder="Password"
         />
-        <button type="submit">Sign In</button>
+        <button type="submit" className="sign-form-button">
+          Sign In
+        </button>
       </form>
       <h3>OR</h3>
       {/* TODO open gugel on same page */}

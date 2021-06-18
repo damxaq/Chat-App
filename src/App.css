@@ -257,7 +257,7 @@ textarea {
   margin: 1rem 0;
 }
 
-.register-form button {
+.sign-form-button {
   background: #52c234;
   background: -webkit-linear-gradient(to top, #134700, #52c234);
   background: linear-gradient(to top, #134700, #52c234);
@@ -271,9 +271,15 @@ textarea {
   cursor: pointer;
   margin: 1rem;
   outline: none;
+  align-items: center;
+  display: flex;
 }
 
-.register-form button:hover {
+.sign-form-button .big {
+  font-size: 1.4rem;
+}
+
+.sign-form-button:hover {
   background: #52c234;
 }
 
@@ -290,31 +296,8 @@ textarea {
   max-width: 400px;
 }
 
-/* TODO button styles can be together */
-.verification-container button {
-  background: #52c234;
-  background: -webkit-linear-gradient(to top, #134700, #52c234);
-  background: linear-gradient(to top, #134700, #52c234);
-
-  padding: 1rem 2rem;
-  color: white;
-  font-weight: bold;
-  font-size: 1.4rem;
-  border-radius: 15px;
-  border: none;
-  cursor: pointer;
-  margin: 1rem;
-  align-items: center;
-  display: flex;
-  outline: none;
-}
-
 .verification-container button i {
   font-size: 2rem;
-}
-
-.verification-container button:hover {
-  background: #52c234;
 }
 
 .verification-icon {

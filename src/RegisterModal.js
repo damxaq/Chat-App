@@ -50,7 +50,9 @@ const RegisterModal = () => {
           placeholder="Confirm Password"
         />
 
-        <button type="submit">Sign Up</button>
+        <button type="submit" className="sign-form-button">
+          Sign Up
+        </button>
       </form>
     </div>
   );

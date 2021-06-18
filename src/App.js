@@ -77,9 +77,6 @@ function App() {
 
   const sendVerificationEmail = () => {
     const newTime = Math.floor(new Date().getTime() / 1000.0);
-    if (verificationTimestamp) {
-      console.log(newTime - verificationTimestamp);
-    }
     if (
       user &&
       user.emailVerified === false &&
