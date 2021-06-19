@@ -1,5 +1,3 @@
-// TODO add waiting to make sure user is created in database before showing profiledata
-
 import React, { useState, useEffect } from "react";
 
 import { useGlobalContext } from "./App";

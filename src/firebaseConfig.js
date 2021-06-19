@@ -1,7 +1,6 @@
 const API_KEY = process.env.REACT_APP_FIREBASE_API_KEY;
 
 const config = {
-  //TODO move api key to env, and config to separate file
   apiKey: API_KEY,
   authDomain: "chat-app-627c6.firebaseapp.com",
   projectId: "chat-app-627c6",

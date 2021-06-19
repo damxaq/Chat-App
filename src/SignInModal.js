@@ -59,12 +59,7 @@ const SignInModal = ({ auth }) => {
       <h3>OR</h3>
       <div className="google-btn" onClick={signInWithGoogle}>
         <div className="google-icon-wrapper">
-          <img
-            className="google-icon"
-            // TODO: make this file local
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-            alt="google"
-          />
+          <img className="google-icon" src="../google.svg" alt="google" />
         </div>
         <p className="btn-text">
           <b>Sign in with google</b>
