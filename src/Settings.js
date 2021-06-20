@@ -120,11 +120,13 @@ const Settings = ({ profileData, profileRef }) => {
       {selectedFile && fileCorrect && (
         <button onClick={onFileUpload}>Upload!</button>
       )}
-      <h4>Change Name:</h4>
+      <h4 className="change-name-title">Change Name:</h4>
       <div className="change-name-form">
         <form onSubmit={updateName}>
-          <input type="text" placeholder={profileData.name} />
-          <button type="submit">Submit</button>
+          <input type="text" placeholder={profileData.name} minLength="4" />
+          <button type="submit" className="change-name-button">
+            Change
+          </button>
         </form>
       </div>
     </div>

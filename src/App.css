@@ -712,6 +712,10 @@ textarea {
   background-color: rebeccapurple;
 }
 
+.change-name-title {
+  margin-bottom: 0;
+}
+
 .change-name-form {
   display: flex;
   justify-content: center;
@@ -719,6 +723,42 @@ textarea {
 
 .change-name-form form {
   justify-content: center;
+  align-items: center;
+}
+
+.change-name-form input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rebeccapurple;
+  outline: none;
+  color: white;
+  font-size: 1.5rem;
+  width: 100%;
+  max-width: 16rem;
+  padding: 0.5rem 1rem;
+  margin: 0;
+}
+
+.change-name-button {
+  background: #52c234;
+  background: -webkit-linear-gradient(to top, #134700, #52c234);
+  background: linear-gradient(to top, #134700, #52c234);
+
+  padding: 0.6rem 1rem;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  margin: 1rem;
+  outline: none;
+  align-items: center;
+  display: flex;
+}
+
+.change-name-button:hover {
+  background: #52c234;
 }
 
 .image-file {

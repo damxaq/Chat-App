@@ -1,4 +1,3 @@
-// profileData is wiped out when there is problem with loading site
 // comments
 // clear react hooks warnings
 
