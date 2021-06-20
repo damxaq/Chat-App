@@ -712,6 +712,28 @@ textarea {
   background-color: rebeccapurple;
 }
 
+.settings-container h4 {
+  color: rebeccapurple;
+  margin: 0.5rem;
+}
+
+.file-upload-settings {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(115, 116, 207, 0.6);
+  border-left: none;
+  border-right: none;
+  margin-top: 1rem;
+}
+
+.file-upload-settings p {
+  font-size: 1rem;
+}
+
+.file-upload-button-container {
+  margin: auto;
+}
+
 .change-name-title {
   margin-bottom: 0;
 }

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
 const Settings = ({ profileData, profileRef }) => {
+  const imageFileRef = useRef();
   const ALLOWED_SIZE = 500000;
   const storageRef = firebase.storage().ref();
 
@@ -31,7 +32,7 @@ const Settings = ({ profileData, profileRef }) => {
   const updateName = async (e) => {
     e.preventDefault();
     const newName = e.target[0].value;
-    if (newName !== profileData.name) {
+    if (newName && newName !== profileData.name) {
       e.target[0].value = "";
       await profileRef.update({
         name: newName,
@@ -46,6 +47,8 @@ const Settings = ({ profileData, profileRef }) => {
       selectedFile.size < ALLOWED_SIZE
     ) {
       setfileCorrect(true);
+    } else {
+      setfileCorrect(false);
     }
   }, [selectedFile, setfileCorrect]);
 
@@ -94,40 +97,63 @@ const Settings = ({ profileData, profileRef }) => {
         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
           console.log("File available at", downloadURL);
           updateAvatar(downloadURL);
+          setSelectedFile(null);
+          imageFileRef.current.value = "";
         });
       }
     );
   };
 
+  const handleImageAttach = (e) => {
+    e.preventDefault();
+    imageFileRef.current.click();
+  };
+
   return (
-    <div>
-      <h4>Change Profile Picture:</h4>
-      <div>
-        <input type="file" onChange={onFileChange} />
-      </div>
-      {selectedFile && (
-        <div>
-          <p>File Type: {selectedFile.type}</p>
-          <p>File Size: {Math.round(selectedFile.size / 1000)} KB</p>
-        </div>
-      )}
-      {selectedFile && selectedFile.size > ALLOWED_SIZE && (
-        <p>File too big! 100kB maximum</p>
-      )}
-      {selectedFile && selectedFile.type !== "image/jpeg" && (
-        <p>Wrong type of file!</p>
-      )}
-      {selectedFile && fileCorrect && (
-        <button onClick={onFileUpload}>Upload!</button>
-      )}
-      <h4 className="change-name-title">Change Name:</h4>
-      <div className="change-name-form">
-        <form onSubmit={updateName}>
-          <input type="text" placeholder={profileData.name} minLength="4" />
-          <button type="submit" className="change-name-button">
-            Change
+    <div className="settings-container">
+      <div className="file-upload-settings">
+        <h4>Change Profile Picture:</h4>
+        <div className="file-upload-button-container">
+          <button className="change-name-button" onClick={handleImageAttach}>
+            Choose file
           </button>
-        </form>
+        </div>
+        <input
+          type="file"
+          onChange={onFileChange}
+          ref={imageFileRef}
+          style={{ display: "none" }}
+        />
+        {selectedFile && (
+          <div>
+            <p>File Type: {selectedFile.type}</p>
+            <p>File Size: {Math.round(selectedFile.size / 1000)} KB</p>
+          </div>
+        )}
+        {selectedFile && selectedFile.size > ALLOWED_SIZE && (
+          <p>File too big! 100kB maximum</p>
+        )}
+        {selectedFile && selectedFile.type !== "image/jpeg" && (
+          <p>Wrong type of file!</p>
+        )}
+        {selectedFile && fileCorrect && (
+          <div className="file-upload-button-container">
+            <button onClick={onFileUpload} className="change-name-button">
+              Upload!
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="change-name-settings">
+        <h4 className="change-name-title">Change Name:</h4>
+        <div className="change-name-form">
+          <form onSubmit={updateName}>
+            <input type="text" placeholder={profileData.name} minLength="4" />
+            <button type="submit" className="change-name-button">
+              Change
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
