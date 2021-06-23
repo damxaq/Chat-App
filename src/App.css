@@ -41,7 +41,7 @@ body {
   color: silver;
 }
 
-.App section {
+.app-section {
   /* border: 1px solid rebeccapurple; */
   /* width: 80vw; */
   margin: auto;
@@ -53,6 +53,7 @@ body {
 .chat-room {
   display: flex;
   flex-direction: column;
+  height: 95%;
 }
 
 .room-title-container {
@@ -108,7 +109,7 @@ textarea {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  height: 65vh;
+  height: 100%;
   max-height: 100%;
   padding-bottom: 3rem;
   padding-top: 2rem;
@@ -769,7 +770,7 @@ textarea {
   padding: 0.6rem 1rem;
   color: white;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
   border-radius: 15px;
   border: none;
   cursor: pointer;
@@ -872,6 +873,80 @@ textarea {
   font-size: 0.8rem;
   align-self: center;
   margin-left: 1rem;
+}
+
+.emoji-container {
+  height: 10rem;
+  width: 100%;
+  display: none;
+  position: relative;
+}
+
+.emoji-container.active {
+  display: flex;
+}
+
+.emoji {
+  position: absolute;
+  all: "initial";
+  position: absolute;
+  height: 5rem;
+  width: 100%;
+  border: 1px solid green;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.emoji-mart {
+  margin: 0.2rem 0 !important;
+  background: transparent !important;
+  width: 100% !important;
+  border: none !important;
+  height: 10rem !important;
+}
+
+.emoji-mart-scroll {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 10rem !important;
+  position: absolute;
+  top: 3rem;
+}
+
+.emoji-mart-search {
+  display: none;
+}
+.emoji-mart-category-label {
+  display: none;
+}
+
+.emoji-mart-category {
+  margin: auto !important;
+  margin-left: 2rem !important;
+  margin-right: 2rem !important;
+  height: auto !important;
+}
+
+.emoji-mart-category section {
+  height: auto !important;
+}
+
+.emoji-mart-category-list {
+  border-bottom: 1px solid rebeccapurple !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.emoji-mart-bar:first-child {
+  border: none !important;
+}
+
+.emoji-mart-emoji {
+  outline: none !important;
+}
+
+.emoji-mart-anchor {
+  cursor: pointer !important;
 }
 
 @keyframes spin {

@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { AiOutlineSend } from "react-icons/ai";
 import { MdAttachFile } from "react-icons/md";
+import { GrEmoji } from "react-icons/gr";
 import { TiDeleteOutline } from "react-icons/ti";
 import TextareaAutosize from "react-textarea-autosize";
+import "emoji-mart/css/emoji-mart.css";
+import data from "emoji-mart/data/google.json";
+import { NimblePicker } from "emoji-mart";
+import { Emoji } from "emoji-mart";
 
 const ChatRoomForm = ({
   sendMessage,
@@ -17,10 +22,16 @@ const ChatRoomForm = ({
 }) => {
   const [formValue, setFormValue] = useState("");
   const [correctFile, setCorrectFile] = useState(true);
+  const [showEmoji, setShowEmoji] = useState(false);
+  const textAreaRef = useRef();
 
   const ALLOWED_SIZE = 10000000;
   const handleTextArea = (e) => {
     setFormValue(e.target.value);
+  };
+
+  const addEmojiToTextArea = (emoji) => {
+    setFormValue(formValue + emoji);
   };
 
   const onKeyPress = (e) => {
@@ -68,6 +79,11 @@ const ChatRoomForm = ({
     imageFileRef.current.click();
   };
 
+  const addEmoji = (e) => {
+    addEmojiToTextArea(e.colons);
+    textAreaRef.current.focus();
+  };
+
   return (
     <div className="form-container">
       <input
@@ -78,15 +94,26 @@ const ChatRoomForm = ({
         onChange={onFileChange}
       />
       <form onSubmit={handleSendMessage} onKeyDown={onKeyPress}>
-        <button className="form-button" onClick={handleImageAttach}>
+        <button
+          type="button"
+          className="form-button"
+          onClick={handleImageAttach}
+        >
           <MdAttachFile className="icon" />
+        </button>
+        <button
+          type="button"
+          className="form-button"
+          onClick={() => setShowEmoji(!showEmoji)}
+        >
+          <GrEmoji className="icon" />
         </button>
         {selectedFile && (
           <div className="image-preview-container">
             {imageData && (
               <div className="image-preview">
                 <img src={imageData} alt={selectedFile.name} />
-                <button onClick={cancelImage}>
+                <button type="button" onClick={cancelImage}>
                   <TiDeleteOutline />
                 </button>
               </div>
@@ -113,6 +140,7 @@ const ChatRoomForm = ({
           onChange={handleTextArea}
           placeholder="Write a message..."
           maxRows={3}
+          ref={textAreaRef}
         />
         {loading ? (
           <div>
@@ -124,6 +152,17 @@ const ChatRoomForm = ({
           </button>
         )}
       </form>
+      <div className={showEmoji ? "emoji-container active" : "emoji-container"}>
+        <NimblePicker
+          set="google"
+          data={data}
+          className="emoji"
+          showSkinTones={false}
+          showPreview={false}
+          sheetSize={16}
+          onClick={addEmoji}
+        />
+      </div>
     </div>
   );
 };

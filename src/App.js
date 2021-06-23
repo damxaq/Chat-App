@@ -153,7 +153,7 @@ function App() {
           </h3>
           <Authentication />
         </header>
-        <section>
+        <section className="app-section">
           {isSignInModalOpen && <SignInModal auth={auth} user={user} />}
           {isRegisterModalOpen && <RegisterModal />}
           {user && !user.emailVerified && <VerificationModal />}
