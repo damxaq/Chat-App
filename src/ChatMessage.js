@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useGlobalContext } from "./App";
+import { Emoji } from "emoji-mart";
 
 const ChatMessage = ({
   message,
@@ -85,6 +86,30 @@ const ChatMessage = ({
     };
   };
 
+  const EmojiMessage = ({ msg }) => {
+    console.log(msg.split(/[::]/));
+    return (
+      <p>
+        {msg.split(/[::]/).map((word) => {
+          return (
+            word && (
+              <Emoji
+                set={"google"}
+                emoji={word}
+                size={18}
+                fallback={(emoji, props) => {
+                  console.log("-----", emoji, props);
+                  return emoji ? `:${emoji.short_names[0]}:` : props.emoji;
+                }}
+              />
+            )
+          );
+        })}
+      </p>
+    );
+    return <p>{msg}</p>;
+  };
+
   return (
     <>
       <div className="chat-msg-time">{showMsgTime && msgDate}</div>
@@ -117,7 +142,7 @@ const ChatMessage = ({
               </div>
             </>
           ) : (
-            <p>{decryptedText}</p>
+            <EmojiMessage msg={decryptedText} />
           )}
         </div>
         {messageClass === "sent" && (
