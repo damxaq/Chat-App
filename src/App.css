@@ -945,6 +945,10 @@ textarea {
   outline: none !important;
 }
 
+.emoji-mart-emoji span {
+  transform: translateY(3px);
+}
+
 .emoji-mart-anchor {
   cursor: pointer !important;
 }
