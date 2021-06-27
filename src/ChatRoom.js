@@ -182,8 +182,8 @@ const ChatRoom = ({ user, contacts }) => {
                     }
                     photoURL={
                       msg && msg.uid === user.id
-                        ? chatGuest.avatar
-                        : user.avatar
+                        ? user.avatar
+                        : chatGuest.avatar
                     }
                     messageClass={
                       msg && msg.uid === user.id ? "sent" : "received"

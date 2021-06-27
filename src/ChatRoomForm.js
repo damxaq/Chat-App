@@ -8,7 +8,6 @@ import TextareaAutosize from "react-textarea-autosize";
 import "emoji-mart/css/emoji-mart.css";
 import data from "emoji-mart/data/google.json";
 import { NimblePicker } from "emoji-mart";
-import { Emoji } from "emoji-mart";
 
 const ChatRoomForm = ({
   sendMessage,
