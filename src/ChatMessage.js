@@ -87,23 +87,52 @@ const ChatMessage = ({
   };
 
   const EmojiMessage = ({ msg }) => {
-    console.log(msg.split(/[::]/));
+    const msgEmoji = [];
+    let ending = null;
+    const parts = msg.split(/(:)/);
+    const testArr = parts.filter((part) => part != "");
+
+    if (testArr[0] !== ":")
+      msgEmoji.push({ text: testArr.splice(0, 1)[0], isEmoji: false });
+    if (testArr[testArr.length - 1] !== ":")
+      ending = testArr.splice(testArr.length - 1, 1)[0];
+
+    const arrayLength = testArr.length;
+    if (arrayLength > 2) {
+      for (let i = testArr[0] === ":" ? 0 : 1; i < arrayLength; i++) {
+        if (testArr[i] !== ":") {
+          if (testArr[i].includes(" ")) {
+            let addition = ":" + testArr[i];
+            if (arrayLength === i + 2 && testArr[i + 1] === ":")
+              addition += ":";
+            msgEmoji.push({ text: addition, isEmoji: false });
+          } else {
+            msgEmoji.push({ text: testArr[i], isEmoji: true });
+          }
+        }
+      }
+    } else {
+      return <p>{msg}</p>;
+    }
+
+    if (ending) msgEmoji.push({ text: ending, isEmoji: false });
+
     return (
       <p>
-        {msg.split(/[::]/).map((word) => {
-          return (
-            word && (
+        {msgEmoji.map((part, index) => {
+          if (part.text && part.isEmoji) {
+            return (
               <Emoji
+                key={index}
                 set={"google"}
-                emoji={word}
+                emoji={part.text}
                 size={18}
-                fallback={(emoji, props) => {
-                  console.log("-----", emoji, props);
-                  return emoji ? `:${emoji.short_names[0]}:` : props.emoji;
+                fallback={() => {
+                  return ":" + part.text + ":";
                 }}
               />
-            )
-          );
+            );
+          } else return part.text;
         })}
       </p>
     );
