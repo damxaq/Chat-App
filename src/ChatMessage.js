@@ -86,11 +86,12 @@ const ChatMessage = ({
     };
   };
 
+  // Converting message string into an array of objects, to extract text between colons and check if it is an emoji
   const EmojiMessage = ({ msg }) => {
     const msgEmoji = [];
     let ending = null;
     const parts = msg.split(/(:)/);
-    const testArr = parts.filter((part) => part != "");
+    const testArr = parts.filter((part) => part !== "");
 
     if (testArr[0] !== ":")
       msgEmoji.push({ text: testArr.splice(0, 1)[0], isEmoji: false });
@@ -98,6 +99,8 @@ const ChatMessage = ({
       ending = testArr.splice(testArr.length - 1, 1)[0];
 
     const arrayLength = testArr.length;
+
+    // If array length is less than 2, then text message contains less than two colons, so it does not have emojis to check
     if (arrayLength > 2) {
       for (let i = testArr[0] === ":" ? 0 : 1; i < arrayLength; i++) {
         if (testArr[i] !== ":") {
@@ -136,7 +139,6 @@ const ChatMessage = ({
         })}
       </p>
     );
-    return <p>{msg}</p>;
   };
 
   return (

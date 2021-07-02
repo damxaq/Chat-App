@@ -1,6 +1,3 @@
-// comments
-// clear react hooks warnings
-
 import "./App.css";
 
 import Authentication from "./Authentication";
@@ -74,6 +71,7 @@ function App() {
     return "";
   };
 
+  // Sending verification email, and preventing from repeating the process more often than 2 minutes, until the account is verified
   const sendVerificationEmail = () => {
     const newTime = Math.floor(new Date().getTime() / 1000.0);
     if (
@@ -96,6 +94,7 @@ function App() {
 
   useEffect(() => {
     if (!user) {
+      // Reseting state values after signing out
       setIsSignInModalOpen(true);
       setIsSettingModalOpen(false);
       setIsContactModalOpen(false);
@@ -109,6 +108,7 @@ function App() {
 
   useEffect(() => {
     if (!userVerified && user && user.emailVerified) {
+      // Final signing up of verified account
       setUserVerified(true);
       setIsContactModalOpen(true);
     }

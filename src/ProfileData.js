@@ -160,7 +160,7 @@ const ProfileData = () => {
               const userName = doc.data().name;
               const userAvatar = doc.data().avatar;
               if (userName !== contact.name || userAvatar !== contact.avatar) {
-                console.log("Updating contacts");
+                // Updating contacts
                 let updatedContacts = profileData[0].contacts.filter(
                   (element) => element.id !== contact.id
                 );
