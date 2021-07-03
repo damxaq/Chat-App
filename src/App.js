@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useContext } from "react";
 import "./App.css";
 
 import Authentication from "./Authentication";
@@ -7,20 +8,18 @@ import SignInModal from "./SignInModal";
 import VerificationModal from "./VerificationModal";
 import UserPage from "./UserPage";
 
-import React, { useState, useEffect, useContext } from "react";
-
 import { AiFillMessage } from "react-icons/ai";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import config from "./firebaseConfig";
 
 const CryptoJS = require("crypto-js");
 
+// Encrytption key
 const CRYPTO_KEY = process.env.REACT_APP_SECRET_MYCHAT_CRYPTO_KEY;
 
 // Initialazing firebase connection

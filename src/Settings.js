@@ -52,6 +52,7 @@ const Settings = ({ profileData, profileRef }) => {
     }
   }, [selectedFile, setfileCorrect]);
 
+  // Uploading profile image to firebase
   const uploadAvatar = (file) => {
     const timestamp = Math.round(new Date().getTime() / 1000).toString();
     const newFile = timestamp + file.name;

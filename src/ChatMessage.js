@@ -29,6 +29,7 @@ const ChatMessage = ({
 
   const decryptedText = decrypt(text);
 
+  // Getting cached image from local storage, or caching image if it doesn't exist
   const Image = ({ url, title }) => {
     if (url && title !== undefined) {
       const image = window.localStorage.getItem(title);
