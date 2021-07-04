@@ -30,11 +30,12 @@ const LastMsgInfo = ({ roomId }) => {
         });
       })
       .catch((error) => {
-        console.log("Error getting documents: ", error);
+        console.log("Error getting last message: ", error);
       });
   };
 
   useEffect(() => {
+    // Refreshing previews of last messages once in a minute
     getLastMsgData();
     const messageInterval = setInterval(() => {
       getLastMsgData();
