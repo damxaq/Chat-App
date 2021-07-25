@@ -53,10 +53,12 @@ function App() {
     "verificationTimestamp"
   );
 
+  // Encrytping messages
   const encrypt = (text) => {
     return CryptoJS.AES.encrypt(JSON.stringify(text), CRYPTO_KEY).toString();
   };
 
+  // Decrytping messages
   const decrypt = (text) => {
     if (text) {
       try {

@@ -32,8 +32,6 @@ const ProfileData = () => {
   const [searchedUser, setSearchedUser] = useState(undefined);
   const [invites, setInvites] = useState([]);
 
-  console.log("profileData", profileData);
-
   const generateRoomId = (user1, user2) => {
     return user1 > user2 ? user2 + user1 : user1 + user2;
   };
