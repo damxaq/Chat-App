@@ -11,6 +11,8 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
+const MSG_LIMIT = 20;
+
 const ChatRoom = ({ user, contacts }) => {
   const { firestore, chatRoomId, encrypt } = useGlobalContext();
   const bottomChatRef = useRef();
@@ -19,7 +21,7 @@ const ChatRoom = ({ user, contacts }) => {
     .collection("rooms")
     .doc(chatRoomId)
     .collection("messages");
-  const [msgLimit, setMsgLimit] = useState(20);
+  const [msgLimit, setMsgLimit] = useState(MSG_LIMIT);
   const query = messagesRef.orderBy("createdAt", "desc").limit(msgLimit);
   const [messages] = useCollectionData(query, { idField: "id" });
   const storageRef = firebase.storage().ref();
@@ -42,7 +44,7 @@ const ChatRoom = ({ user, contacts }) => {
 
     if (formValue) {
       await messagesRef.add({
-        text: encrypt(formValue),
+        text: encrypt(formValue, chatRoomId),
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         uid: user.id,
         isPhoto: false,
@@ -99,7 +101,7 @@ const ChatRoom = ({ user, contacts }) => {
         uploadTask.snapshot.ref.getDownloadURL().then(async (downloadURL) => {
           imageFileRef.current.value = "";
           await messagesRef.add({
-            text: encrypt(downloadURL),
+            text: encrypt(downloadURL, chatRoomId),
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             uid: user.id,
             isPhoto: true,
@@ -116,7 +118,7 @@ const ChatRoom = ({ user, contacts }) => {
       setScrollToBottom(false);
     }
     if (messages && messages.length === msgLimit) {
-      setMsgLimit(msgLimit + 20);
+      setMsgLimit(msgLimit + MSG_LIMIT);
     }
   };
 
@@ -163,7 +165,9 @@ const ChatRoom = ({ user, contacts }) => {
               <div className="room-title">{chatGuest.name}</div>
             </div>
             <div ref={bottomChatRef}></div>
-            {messages && messages.length > 0 && messages.length % 20 === 0 ? (
+            {messages &&
+            messages.length > 0 &&
+            messages.length % MSG_LIMIT === 0 ? (
               <div className="show-more" onClick={() => handleLoadMore()}>
                 Show More
               </div>

@@ -9,12 +9,13 @@ const ChatMessage = ({
   prevMsgTime,
   guestName,
 }) => {
-  const { decrypt } = useGlobalContext();
+  const { decrypt, chatRoomId } = useGlobalContext();
   const { text, isPhoto, createdAt, photoTitle } = message;
   const modalRef = useRef();
   const msgDate = createdAt ? createdAt.toDate().toLocaleString() : null;
   const [showMsgTime, setshowMsgTime] = useState(false);
   const MIN_TIME_DIFFERENCE = 300;
+  const [messageEncrypted, setMessageEncrypted] = useState("");
 
   useEffect(() => {
     if (prevMsgTime > 0 && createdAt > 0) {
@@ -27,7 +28,9 @@ const ChatMessage = ({
     }
   }, [prevMsgTime, createdAt]);
 
-  const decryptedText = decrypt(text);
+  useEffect(() => {
+    setMessageEncrypted(decrypt(text, chatRoomId));
+  }, []);
 
   // Getting cached image from local storage, or caching image if it doesn't exist
   const Image = ({ url, title }) => {
@@ -38,7 +41,7 @@ const ChatMessage = ({
           <img
             src={"data:image/jpeg;" + image}
             className="thumb-img"
-            alt={decryptedText}
+            alt={messageEncrypted}
             onClick={() => {
               modalRef.current.style.display = "block";
             }}
@@ -49,8 +52,8 @@ const ChatMessage = ({
         return (
           <img
             className="thumb-img"
-            src={decryptedText}
-            alt={decryptedText}
+            src={messageEncrypted}
+            alt={messageEncrypted}
             onClick={() => {
               modalRef.current.style.display = "block";
             }}
@@ -160,7 +163,7 @@ const ChatMessage = ({
         <div className={`message-content ${messageClass}`}>
           {isPhoto ? (
             <>
-              <Image url={decryptedText} title={photoTitle} />
+              <Image url={messageEncrypted} title={photoTitle} />
               <div className="modal" ref={modalRef}>
                 <span
                   className="close"
@@ -170,11 +173,15 @@ const ChatMessage = ({
                 >
                   X
                 </span>
-                <img className="modal-content" src={decryptedText} alt="img" />
+                <img
+                  className="modal-content"
+                  src={messageEncrypted}
+                  alt="img"
+                />
               </div>
             </>
           ) : (
-            <EmojiMessage msg={decryptedText} />
+            <EmojiMessage msg={messageEncrypted} />
           )}
         </div>
         {messageClass === "sent" && (

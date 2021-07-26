@@ -105,7 +105,7 @@ const ProfileData = () => {
         .collection("messages")
         .doc()
         .set({
-          text: encrypt(`${profileData[0].name} has joined the chat!`),
+          text: encrypt(`${profileData[0].name} has joined the chat!`, roomId),
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           uid: profileData[0].id,
           isPhoto: false,

@@ -17,6 +17,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 import config from "./firebaseConfig";
 
+import { sha256 } from "js-sha256";
 const CryptoJS = require("crypto-js");
 
 // Encrytption key
@@ -53,19 +54,27 @@ function App() {
     "verificationTimestamp"
   );
 
-  // Encrytping messages
-  const encrypt = (text) => {
-    return CryptoJS.AES.encrypt(JSON.stringify(text), CRYPTO_KEY).toString();
+  const getRoomKey = (room) => {
+    return sha256.hmac(CRYPTO_KEY, room).substring(0, 10);
   };
 
+  // Encrytping messages
+  const encrypt = (text, roomId) => {
+    const key = getRoomKey(roomId);
+    return CryptoJS.AES.encrypt(JSON.stringify(text), key).toString();
+  };
+
+  console.log("#######", chatRoomId, "########");
+
   // Decrytping messages
-  const decrypt = (text) => {
-    if (text) {
+  const decrypt = (text, roomId) => {
+    if (text && roomId) {
+      const key = getRoomKey(roomId);
       try {
-        const bytes = CryptoJS.AES.decrypt(text, CRYPTO_KEY);
+        const bytes = CryptoJS.AES.decrypt(text, key);
         return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
       } catch (error) {
-        console.log("decryption error", error);
+        console.log("decryption error", error, text, key, roomId);
         return text;
       }
     }

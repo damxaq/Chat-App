@@ -22,7 +22,7 @@ const LastMsgInfo = ({ roomId }) => {
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           const msgData = {
-            text: decrypt(doc.data().text),
+            text: decrypt(doc.data().text, roomId),
             isPhoto: doc.data().isPhoto,
             createdAt: doc.data().createdAt,
           };
