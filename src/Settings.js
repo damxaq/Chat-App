@@ -40,6 +40,7 @@ const Settings = ({ profileData, profileRef }) => {
     }
   };
 
+  // Checking if file image is correct
   useEffect(() => {
     if (
       selectedFile &&
