@@ -9,11 +9,11 @@ Most important features:
 - users can send images
 - user can change profile picture and name
 - user can remove contacts
-- messages are displayed in ammount of 20, but it can be increased by "load more" button
-- chat room is displaying messages date, but only if there is some time passed between them
-- fully responsive
-- emojis in the chat
 - the app has offline mode, and chat images are stored in local storage
 - messages are uniquely encrypted and decrypted on client side
 - new messages are displayed in real time
 - contacts cards are refreshing their contact data, and previews of last messages
+- messages are displayed in ammount of 20, but it can be increased by "load more" button
+- chat room is displaying messages date, but only if there is some time passed between them
+- fully responsive
+- emojis in the chat
