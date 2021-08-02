@@ -5,9 +5,6 @@ import LastMsgInfo from "./LastMsgInfo";
 
 const SideContacts = ({ contacts }) => {
   const { setChatRoomId, chatRoomId } = useGlobalContext();
-  // TODO Side contacts are looping through messages from other rooms when changing room
-  console.log("--------------------------------");
-  console.log("chatRoomId", chatRoomId);
 
   return (
     <>

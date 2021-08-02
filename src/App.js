@@ -64,8 +64,6 @@ function App() {
     return CryptoJS.AES.encrypt(JSON.stringify(text), key).toString();
   };
 
-  console.log("#######", chatRoomId, "########");
-
   // Decrytping messages
   const decrypt = (text, roomId) => {
     if (text && roomId) {
