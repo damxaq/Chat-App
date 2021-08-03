@@ -22,6 +22,7 @@ const UserPage = () => {
     await accountsRef.doc(account.id).set(account);
   };
 
+  // Creating new user data in the database after signing in for the first time
   useEffect(() => {
     const query = accountIdsRef.where("email", "==", user.email);
     query
