@@ -2,6 +2,14 @@ Basic chat app with firebase database
 
 https://chat-app-627c6.web.app/
 
+Testing credencials:
+
+Login:
+mychat.test@yandex.com
+
+Password:
+mychat
+
 Most important features:
 
 - user can register account by email, with receiving verification link, or login directly with google account
