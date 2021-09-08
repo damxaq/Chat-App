@@ -17,12 +17,14 @@ const Contact = ({
 }) => {
   const { setIsContactModalOpen, setChatRoomId } = useGlobalContext();
 
-  const handleRemoveContact = () => {
+  const handleRemoveContact = (contact) => {
     if (
       window.confirm(
         `Are you sure you want to delete ${contact.name} from your contacts?`
       )
-    ) removeContact(contact.id);
+    ) {
+      removeContact(contact.id);
+    }
   };
 
   return (
