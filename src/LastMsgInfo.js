@@ -7,12 +7,12 @@ import "firebase/firestore";
 const LastMsgInfo = ({ roomId }) => {
   const { firestore, decrypt } = useGlobalContext();
 
-  const [msgInfo, setMsgInfo] = useState(null);
-
-    const messageRef = firestore
+  const messageRef = firestore
     .collection("rooms")
     .doc(roomId)
     .collection("messages");
+
+  const [msgInfo, setMsgInfo] = useState(null);
 
   const getLastMsgData = () => {
     messageRef
